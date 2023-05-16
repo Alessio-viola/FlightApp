@@ -1,0 +1,27 @@
+{
+  "name": "flightapp",
+  "version": "1.0.0",
+  "description": "<pre>  - src (codice sorgente)     - utils (files .js che svolgono funzionalità richieste da intera app)     - bootstrap     - routes (pagine app)       - common (cartella con file condivisi da varie pagine)       - nome_pagina (per ogni pagina)         - nome_pagina.html         - nome_pagina.js         - nome_pagina.css  - assets (risorse ausiliarie)     - images     - fonts  - index.js  - global.css  - configuration.js </pre>",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alessio-viola/FlightApp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alessio-viola/FlightApp/issues"
+  },
+  "homepage": "https://github.com/Alessio-viola/FlightApp#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "express": "^4.18.2",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

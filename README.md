@@ -5,7 +5,9 @@
     - bootstrap
     - routes (pagine app)
       - common (cartella con file condivisi da varie pagine)
-      - nome_pagina (per ogni pagina)
+      -nome_pagina.ejs(in caso di utilizzo di template)
+      Altrimenti:
+      - nome_pagina (cartella per ogni pagina)
         - nome_pagina.html
         - nome_pagina.js
         - nome_pagina.css
