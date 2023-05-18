@@ -1,0 +1,34 @@
+.flight_app_navbar {
+    background-color: var(--primary-color);
+    min-width: 340px;
+}
+
+.navbar-brand img {
+    max-height: 50px;
+    height: 100%;
+    width: 100%;
+    padding: 8px;
+}
+
+.btn-dark {
+    background: var(--primary-color);
+    border: none;
+}
+
+.nav-link {
+    color: var(--primary-light-color)
+}
+
+.btn {
+    color: var(--primary-light-color)
+}
+
+#dropdownUser {
+    gap: 8px;
+}
+#profileImage {
+    height: 36px;
+    border-radius: 50%;
+
+    margin-right: 8px;
+}
