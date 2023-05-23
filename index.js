@@ -54,6 +54,38 @@ app.get("/api/sign-in", (req, res) => {
     res.sendFile('signin.html', {root: __dirname + "/src/routes/signin/"})
 });
 
+app.get("/", (req, res) => {
+    //link per andare alla pagina del form
+    res.sendFile(`.${routesDir}/homepage/homepage.html`, {root: __dirname});
+});
+app.get("/api/sign-in", (req, res) => {
+    res.sendFile('signin.html', {root: __dirname + "/src/routes/signin/"})
+});
+app.get("/api/sign-up", (req, res) => {
+    res.sendFile('signup.html', {root: __dirname + "/src/routes/signup/"})
+});
+app.get("/avvenuta-iscrizione", (req, res) => {
+    res.sendFile('avvenuta_iscrizione.html', {root: __dirname + "/src/routes/avvenuta_iscrizione/"})
+})
+app.get("/flights", (req, res) => {
+    res.sendFile(`.${routesDir}/flights/flights.html`, {root: __dirname});
+});
+app.get("/booking", (req, res) => {
+    res.sendFile(`.${routesDir}/booking/booking.html`, {root: __dirname});
+});
+app.get("/profile", (req, res) => {
+    res.sendFile('profilePage.html', {root: __dirname + "/src/routes/profilePage/"})
+})
+app.get("/retrieveFlights", async (req, res) => {
+    try {
+        let flights = await flightsRetriever.retrieveFlights(req);
+        res.send(flights);
+    } catch (e) {
+        res.sendStatus(400);
+        res.send(e);
+    }
+});
+
 app.get("/api/sign-up", (req, res) => {
     res.sendFile('signup.html', {root: __dirname + "/src/routes/signup/"})
 });
