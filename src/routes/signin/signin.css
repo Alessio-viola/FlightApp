@@ -1,0 +1,107 @@
+body, html {   
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+      font-family: Arial, sans-serif;
+      background-color: #f1f1f1;
+      background-repeat: no-repeat;
+      background-size: calc(100% - 10%) calc(100% - 10%);
+      background-position: center;
+    }
+    
+  #signinForm {
+      position: absolute;
+      left: 50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      background-color: #fff;
+      max-width: 700px;
+      min-width: 500px;
+      padding: 2%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(5, 5, 5, 0.3);
+    }
+    
+    h1 {
+      text-align: center;
+      color:rgb(28, 25, 25);
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #666;
+    }
+    
+    #show-password-button {
+      background-color:var(--secondary-color);
+      border-radius: 5px;
+    }
+  
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      /*border: none;*/
+      border-width: 3px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+    
+    input[type="submit"] {
+      background-color:var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    
+    input[type="submit"]:hover {
+      background-color: #555;
+    }
+    
+  .invalid-credentials{
+    background-color: #ffe4e4;
+    border:1px solid #ff7f7f;
+    color: #f00;
+    display: none;/*non lo faccio apparire inizialmente*/
+    font-size:14px;
+    margin:10px 0;
+    padding: 10px;
+  }
+  
+  .btn-with-image{
+    background-image: url("../../../assets/images/googleLogo.png");
+    background-repeat: no-repeat;
+    background-color: white;
+    background-size: 100% 100%;/*145px 50px;*/ /*cover*/
+    background-position: center;
+    width: 90%;
+    height: 100%;
+    padding: 10%;
+  }
+  
+  @media (max-width: 670px)  { /*per risolvere sovrapposizione form alla navbar*/
+    #signinForm {
+      position: absolute;
+      left: 50%;
+      top:65%;
+      transform:translate(-50%,-50%);
+      background-color: #fff;
+      max-width: 700px;
+      padding: 2%;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(5, 5, 5, 0.3);
+    }
+  }
+  
+  
