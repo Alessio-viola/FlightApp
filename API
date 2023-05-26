@@ -1,0 +1,25 @@
+1. API OAuth 2.0
+        L'API OAuth 2.0 di Google consente alle applicazioni di ottenere l'autorizzazione per accedere alle risorse dell'utente su diversi servizi di Google senza richiedere le credenziali dell'utente. L'utilizzo dell'API OAuth 2.0 di Google consente alle applicazioni di accedere in modo sicuro alle risorse dell'utente su servizi Google specifici senza richiedere le credenziali dell'utente, come applicato nella sezione di login della nostra web application. Ciò offre un'esperienza utente più sicura e consente alle applicazioni di integrarsi in modo più efficace con l'ecosistema di Google.
+
+2. API AMADEUS
+        Amadeus è una delle principali società globali di tecnologia per l'industria del viaggio e del turismo. L'API Amadeus offre una vasta gamma di servizi e dati per facilitare lo sviluppo di applicazioni e soluzioni nel settore del viaggio.
+        Nello specifico abbiamo selezionato la seguente funzionalità:
+
+             Prenotazioni di voli: L'API Amadeus consente di accedere a funzionalità di prenotazione di voli, inclusa la ricerca di voli disponibili, il recupero dei dettagli sui voli, la prenotazione di biglietti aerei e la gestione delle prenotazioni esistenti.
+
+
+
+3. API LAMINAR DATA
+
+        Laminar Data è un'API che offre dati e servizi per l'industria dell'aviazione. 
+        L'API consente di accedere a una vasta gamma di dati relativi ai voli, al traffico aereo e ad altre informazioni connesse.
+        Nello specifico abbiamo selezionato l'API Flight Data che fornisce una specifica selezione di servizi:
+
+            1. Orari dei voli: L'API può restituire informazioni sugli orari di partenza e arrivo dei voli per una data compagnia aerea o  aeroporto specifico.
+
+            2. Stato del volo: È possibile ottenere informazioni sullo stato dei voli in tempo reale, come il ritardo, l'arrivo in anticipo o la cancellazione di un volo.
+
+            3. Dati sulla rotta: L'API può fornire dettagli sulla rotta di un volo, come gli aeroporti di partenza e arrivo, la distanza percorsa e il tempo di volo previsto.
+
+            4. Informazioni sulle compagnie aeree: È possibile accedere a dati sulle compagnie aeree, come informazioni sulla flotta, le rotte servite e i dettagli di contatto.
+
