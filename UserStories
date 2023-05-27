@@ -35,11 +35,25 @@ USER STORIES
 
 17. Come utente voglio sia che il posto mi venga assegnato automaticamente, ma voglio anche avere la possibilità di scegliere il posto in base alla mia preferenza;
 
-18. Come voglio che mi venga fornita una simulazione della visuale che posso avere scegliendo un determinato posto;
+18. Come utente voglio che mi venga fornita una simulazione della visuale che posso avere scegliendo un determinato posto;
 
-19. Nella pagina in cui viene confermato l'ordine e scelto il posto, è presente un'opzione di scelta che potrebbe far lievitare il prezzo totale. La scelta in questione riguarda l'aggiunta del bagaglio da stiva.
+19. Nella pagina in cui viene confermato l'ordine e scelto il posto, è presente un'opzione di scelta che potrebbe far lievitare il prezzo totale. La scelta in questione riguarda l'aggiunta del bagaglio da stiva;
 
-20. 
+20. Come utente, desidero che tutte le comunicazioni nel sistema siano crittografate con un certificato SSL/TLS per garantire una maggiore sicurezza durante la trasmissione dei dati;
+
+21. Come utente, vorrei avere uno spazio dedicato ai dati da me inseriti in fase di registrazione ed eventualmente poterli modificare(ad esempio Username ed e-mail);
+
+22. Come utente, vorrei avere uno spazio in cui poter vedere i biglietti acquistati per rivisionarli;
+
+23. Possibilità di cancellare i dati del proprio account Google se si è loggati tramite l'autenticazione OAuth 2.0 e possibilità di cancellare i propri dati se si è loggati tramite un account che ha effettuato la registrazione tramite il form;
+
+24. Come utente, vorrei avere uno spazio dedicato al cambio della password nel caso in cui non sia loggato tramite Google;
+
+25. Come utente, vorrei avere una sezione dedicata al logout, in modo tale da non rimanere loggato con i dati del mio profilo;
+
+26. Possibilità di utilizzare una funzionalità 'tracker' che ha lo scopo di tracciare in tempo reale l'aereo desiderato tramite il codice del volo indicato sul biglietto acquistato;
+
+27. Come utente, vorrei avere la possibilità di interfacciarmi tramite una chat in modo tale da avere dei consigli sulla possibile meta di destinazione.
 
 
 

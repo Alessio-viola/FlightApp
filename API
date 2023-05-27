@@ -1,6 +1,7 @@
 1. API OAuth 2.0
         L'API OAuth 2.0 di Google consente alle applicazioni di ottenere l'autorizzazione per accedere alle risorse dell'utente su diversi servizi di Google senza richiedere le credenziali dell'utente. L'utilizzo dell'API OAuth 2.0 di Google consente alle applicazioni di accedere in modo sicuro alle risorse dell'utente su servizi Google specifici senza richiedere le credenziali dell'utente, come applicato nella sezione di login della nostra web application. Ciò offre un'esperienza utente più sicura e consente alle applicazioni di integrarsi in modo più efficace con l'ecosistema di Google.
 
+
 2. API AMADEUS
         Amadeus è una delle principali società globali di tecnologia per l'industria del viaggio e del turismo. L'API Amadeus offre una vasta gamma di servizi e dati per facilitare lo sviluppo di applicazioni e soluzioni nel settore del viaggio.
         Nello specifico abbiamo selezionato la seguente funzionalità:
@@ -23,3 +24,7 @@
 
             4. Informazioni sulle compagnie aeree: È possibile accedere a dati sulle compagnie aeree, come informazioni sulla flotta, le rotte servite e i dettagli di contatto.
 
+4. OpenAI Chat API
+        
+        L'API offre un modo semplice per interagire con il modello di ChatGPT.
+        Nello specifico la utilizziamo affinché possa esserci una chat per l'utente in modo tale da offrire conversazioni strutturate in quanto l'API permette di definire conversazioni strutturate tra un utente e il modello di ChatGPT.
