@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+const constants = require("./configuration");
+
 // Express-Session utilizza i cookie per mantenere lo stato di sessione del client,
 // ma memorizza i dati della sessione sul server
 const session = require('express-session');
@@ -14,6 +16,9 @@ app.use(session({
 const {Client} = require('pg');
 const bcrypt = require('bcrypt');
 
+const passportSetup = require("./config/passport-setup")
+const passport = require("passport")
+
 const routesDir = '/src/routes';
 
 
@@ -25,7 +30,12 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.static("./"))
 app.use(express.static("./src/"))
 
-const constants = require("./configuration");
+
+const cookieParser = require("cookie-parser")
+app.use(cookieParser())
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 //gestione dell'interazione tra applicazione e database PostgreSQL
 const connectionString = constants.connectionString;
@@ -76,6 +86,11 @@ app.get("/booking", (req, res) => {
 app.get("/profile", (req, res) => {
     res.sendFile('profilePage.html', {root: __dirname + "/src/routes/profilePage/"})
 })
+
+app.get('/dashboard', (req, res) => {
+    res.sendFile('/homepage.html', {root: __dirname + "/src/routes/homepage/"})
+});
+
 app.get("/retrieveFlights", async (req, res) => {
     try {
         let flights = await flightsRetriever.retrieveFlights(req);
@@ -94,7 +109,200 @@ app.get("/avvenuta-iscrizione", (req, res) => {
     res.sendFile('avvenuta_iscrizione.html', {root: __dirname + "/src/routes/avvenuta_iscrizione/"})
 })
 
-//METODI POST 
+
+//endpoint che restituisce i biglietti prenotati dall'utente
+app.get("/biglietti-prenotati", async (req, res) => {
+
+    let email = null;
+    let userIsIn = null;
+    //utente si è loggato tramite email e password
+    if (!req.user) {
+        email = req.session.user
+        userIsIn = "credenziali"
+    } else { //utente si è loggato tramite Google OAuth2
+        email = req.user.email
+        userIsIn = "googleusers"
+    }
+    const query = 'SELECT biglietti.id,biglietti.email,data,codicepartenza,codicearrivo,durata,orapartenza,oraarrivo,nomecompagnia,postonumero,cittapartenza,cittaarrivo,nome,cognome,username from biglietti JOIN ' + userIsIn + ' ON biglietti.email = ' + userIsIn + '.email WHERE biglietti.email = $1';
+    const values = [email];
+    try {
+        const resultQuery = await client.query(query, values);
+        res.status(200)
+        console.log(resultQuery.rows)
+        return res.send(resultQuery.rows)
+    } catch (error) {
+        return res.status(500).send('Error');
+    }
+})
+
+
+//endpoint per gestire informazioni personali del profilo 
+app.get("/get-personal-info", requireAuth, async (req, res) => {
+
+    //utente si è loggato tramite email e password
+    if (!req.user) {
+        const email = req.session.user
+        const query = 'SELECT nome,cognome,username from Credenziali WHERE email = $1';
+        const values = [email];
+        try {
+            const resultQuery = await client.query(query, values);
+
+            const nome = resultQuery.rows[0].nome
+            const cognome = resultQuery.rows[0].cognome
+            const username = resultQuery.rows[0].username
+            console.log(req.session.user)
+            res.status(200)
+            return res.send({nome: nome, cognome: cognome, username: username, email: email})
+        } catch (error) {
+            return res.status(500).send('Error');
+        }
+    } else { //tente si è loggato tramite Google OAuth2
+        return res.send({
+            nome: req.user.nome,
+            cognome: req.user.cognome,
+            username: req.user.username,
+            email: req.user.email
+        })
+    }
+})
+
+
+//eliminazione dati dalla tabella googleUsers in caso di accesso con google
+app.get("/eliminazione-account-Google", requireAuth, async (req, res) => {
+    if (req.user) {
+        const query = 'DELETE FROM googleUsers WHERE email = $1'
+        const values = [req.user.email]
+
+        try {
+            const resultQuery = await client.query(query, values)
+            req.session.destroy(err => {
+                if (err) {
+                    console.log(err);
+                } else {
+
+                    return res.redirect("/logout")//#TODO        
+                }
+            });
+        } catch (error) {
+            return res.status(500).send('Cancellazione dati non è andata a buon fine');
+        }
+    }
+})
+
+//endpoint per gestione cancellazione account 
+app.get("/eliminazione-account", requireAuth, async (req, res) => {
+    const email = req.session.user
+    const query = 'DELETE FROM Credenziali WHERE email = $1';
+    const values = [email];
+    try {
+        const resultQuery = await client.query(query, values);
+
+        req.session.destroy(err => {
+            if (err) {
+                console.log(err);
+            } else {
+
+                return res.redirect("/logout")//#TODO        
+            }
+        });
+
+    } catch (error) {
+        return res.status(500).send('Cancellazione account non è andata a buon fine');
+    }
+});
+
+
+//CODICI DI ERRORE 
+// 1000 --> password e conferma_password diverse
+// 1001 --> old_password errata
+// success --> password aggiornata correttamente 
+
+app.post("/reset-password", requireAuth, async (req, res) => {
+    console.log(req.session)
+    const email = req.session.user
+    const {old_pass, new_pass, conf_new_pass} = req.body
+    //gestione errore password diverse
+    if (new_pass !== conf_new_pass) {
+        return res.send({code: 1000}).status(200)
+    }
+    const query = 'SELECT pass from Credenziali WHERE email = $1';
+    const values = [email];
+
+    try {
+        const resultQuery = await client.query(query, values);
+
+        const result = await bcrypt.compare(old_pass, resultQuery.rows[0].pass);
+
+        if (result === true) {
+            const saltRounds = 10
+            const new_pass_crypted = await bcrypt.hash(new_pass, saltRounds)
+            const query1 = "UPDATE Credenziali SET pass = $1 WHERE email = $2";
+            const values1 = [new_pass_crypted, email]
+            const resultQuery1 = await client.query(query1, values1)
+            res.send({code: "success"})
+            res.status(200);
+        } else {
+            return res.send({code: 1001}).status(200);
+        }
+
+    } catch (error) {
+        res.status(500).send('Error');
+    }
+})
+
+//CODICI DI ERRORE
+// success --> passato il controllo sulla password
+// 1000 --> passwords are not equal
+// 1001 --> wrong password after 
+app.post("/cancellazione-account", requireAuth, async (req, res) => {
+
+    const {pass, conf_pass} = req.body
+    if (pass !== conf_pass) {
+        return res.send({error_code: 1000}).status(200)
+    } else {
+
+        const email = req.session.user
+        const query = 'SELECT pass from Credenziali WHERE email = $1';
+        const values = [email];
+
+        try {
+            const resultQuery = await client.query(query, values);
+
+            const result = await bcrypt.compare(pass, resultQuery.rows[0].pass);
+
+            if (result === true) {
+                return res.send({error_code: "success"}).status(200)
+
+            } else {
+                return res.send({error_code: 1001}).status(200);
+            }
+
+        } catch (error) {
+            res.status(500).send('Error');
+        }
+    }
+})
+
+
+//auth with google
+app.get("/auth/google", passport.authenticate("google", {
+    scope: ["profile", "email"] // the user have to puts the profile informations
+}));
+
+//callback route for google to redirect to 
+//we have to puts passport middleware also hero to exchange code in the url for profile information
+app.get("/auth/google/redirect", passport.authenticate("google"), (req, res) => {
+
+    req.session.loggedin = true;//settato per accesso alle pagine protette
+
+    //res.send(req.user)// ci sarà l'id restituitoci da google
+    res.cookie("logged", true)
+    res.cookie("nameUser", req.user.name.givenName)//utilizzo dei cookie per inviare informazioni dal server al client
+    res.cookie("photoUser", req.user.photos[0].value)
+
+    res.redirect("/")
+})
+
 
 
 //METODI POST
