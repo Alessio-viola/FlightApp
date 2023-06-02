@@ -1,0 +1,118 @@
+/*.flight-card {
+    width: 60vw;
+    !*background-color: var(--background-color);*!
+    background-color: #FAF9EC;
+
+    display: flex;
+    flex-direction: column;
+    !*justify-content: start;*!
+    !*align-content: start;*!
+}
+.flight-card-content {
+    height: 200px;
+
+    display: flex;
+    flex-direction: row;
+    !*justify-content: start;*!
+    align-content: center;
+}*/
+
+#listContainer {
+    display: grid;
+    justify-content: center;
+
+    margin-top: 16px;
+}
+
+body {
+    min-width: 708px;
+}
+
+.flight-card2 {
+    width: 60vw;
+    min-width: 424px;
+    background-color: var(--primary-light-color);
+
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+}
+
+.flight-container {
+    height: 180px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-content: center;
+}
+
+.airline-logo2 {
+    height: 50%;
+    width: auto;
+}
+
+.airplane-arrow {
+    /*color: #0b5ed7;*/
+    /*filter: invert(23%) sepia(71%) saturate(3381%) hue-rotate(210deg) brightness(90%) contrast(92%);*/
+    /* https://codepen.io/sosuke/pen/Pjoqqp */
+
+    width: 80%;
+    height: auto;
+}
+
+.container-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.price {
+    font-weight: 200 !important;
+    text-align: center;
+}
+
+.price-h {
+    font-weight: 200 !important;
+    text-align: center;
+}
+
+.time {
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.air-code {
+    font-size: 24px;
+    line-height: 13px;
+    font-weight: 200;
+}
+
+
+.params-selector {
+    row-gap: 12px;
+    column-gap: 8px;
+    max-height: 154px;
+    flex-grow:1;
+
+    justify-content: center;
+    align-content: center;
+}
+.params-selector > div {
+    column-gap: 12px;
+    flex-grow: 1;
+
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+.info-icon {
+    height: 54px;
+    filter: invert(74%) sepia(23%) saturate(1285%) hue-rotate(88deg) brightness(86%) contrast(90%);
+}
