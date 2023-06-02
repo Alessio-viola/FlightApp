@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Profile Page</title>
+        <!-- Link a font Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <script
+    src="https://code.jquery.com/jquery-3.6.4.min.js"
+    integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+    crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>  
+
+    <script type="text/javascript" src="/src/routes/common/bar.js"></script>
+    <script type="text/javascript" src="/src/routes/profilePage/profilePage.js"></script>
+    
+    <link rel="stylesheet" href="/src/routes/profilePage/profilePage.css"> 
+    <link rel="stylesheet" href="/global.css">
+
+
+  </head>
+
+  <body onload="loadBar(true);"><!--loadBiglietto()-->
+  <div id="navbar"></div>
+
+
+    <!-- Content -->
+    <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="list-group" id="list-tab" role="tablist">
+              <a class="list-group-item list-group-item-action active" id="button-info" data-bs-toggle="list" href="#informazioni-personali" role="tab" aria-controls="nome">Informazioni Personali</a>
+              <a class="list-group-item list-group-item-action" id="list-password-list" data-bs-toggle="list" href="#password" role="tab" aria-controls="password" >Cambia Password</a>
+              <a class="list-group-item list-group-item-action" id="list-biglietti-list" data-bs-toggle="list" href="#panel-biglietti" role="biglietti" aria-controls="biglietti">Biglietti acquistati</a>
+              <a class="list-group-item list-group-item-action" id="list-cancellazione-list" data-bs-toggle="list" href="#cancellazione-account" role="tab" aria-controls="cancellazione-account">Cancellazione account</a>
+              <a class="list-group-item list-group-item-action" id="list-google-deleteInfo-list" data-bs-toggle="list" href="#cancellazione-googleInfo" role="tab" aria-controls="cancellazione-googleInfo">Cancellazione dati Google</a>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="tab-content" id="nav-tabContent">
+              <!-- Cambia Password -->
+              <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="list-password-list">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Cambia Password</h4>
+                    <form id="resetPassword" action="http://localhost:3000/reset-password/">
+                      <div class="mb-3">
+                        <label for="inputPassword" class="form-label">Password Corrente</label>
+                        <input type="password" class="form-control" id="inputOldPassword" placeholder="Inserisci la password corrente" onkeydown="hideErrorMessage()">
+                      </div>
+                      <div class="mb-3">
+                        <label for="inputNewPassword" class="form-label">Nuova Password</label>
+                        <input type="password" class="form-control" id="inputNewPassword" placeholder="Inserisci la nuova password">
+                      </div>
+                      <div class="mb-3">
+                        <label for="inputConfirmPassword" class="form-label">Conferma Nuova Password</label>
+                        <input type="password" class="form-control" id="inputConfirmPassword" placeholder="Conferma la nuova password">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Salva</button>
+                      <p class="invalid-credentials" id="error-message"></p>
+                      <p class="success-credentials" id="success-message"></p>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!--Informazioni Personali-->
+              <div class="tab-pane fade show active" id="informazioni-personali" role="tabpanel" aria-labelledby="button-info">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Informazioni Personali</h4>
+                    <div class="form-group">
+                      <label for="nome">Nome:</label>
+                      <input type="text" class="form-control" id="nome-form" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="cognome">Cognome:</label>
+                      <input type="text" class="form-control" id="cognome-form" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email:</label>
+                      <input type="text" class="form-control" id="email-form" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="username">Username:</label>
+                      <input type="text" class="form-control" id="username-form" value="" readonly>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                <!--Cancellazione account(solo per utenti iscritti con email e password)-->
+                <div class="tab-pane fade" id="cancellazione-account" role="tabpanel" aria-labelledby="list-cancellazione-list">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Cancellazione Account</h4>
+                      <form id="cancellazioneAccount">
+                      <div class="mb-3">
+                        <label for="password">Inserisci Password</label>
+                        <input type="password" class="form-control" id="pass-cancellazione" value="" required>
+                      </div>
+                      <div class="mb-3">
+                        <label for="conf-password">Conferma Password</label>
+                        <input type="password" class="form-control" id="pass-conf-cancellazione" value="" required>
+                      </div>
+                      <!-- Button trigger modal -->
+                      <button id="button-eliminazione-account" type="submit" class="btn btn-primary">    <!-- data-bs-toggle="modal" data-bs-target="#exampleModal" -->
+                      Elimina Account
+                      </button>
+                      <p class="invalid-credentials" id="error-message-elimination-account"></p>
+                      </form>
+                      
+                      
+                      <!-- Modal -->
+                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Cancellazione Account</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Sei sicuro di voler eliminare l'account ?
+                            </div>
+                            <div class="modal-footer">
+                              <button id="annullaModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                              <form action="/eliminazione-account"><button id="btn-eliminazione-definitiva" type="submit" class="btn btn-primary">Elimina</button></form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+                <!--Cancellazioni dati dal DB per gli utenti iscritti tramite Google-->
+                <div class="tab-pane fade" id="cancellazione-googleInfo" role="tabpanel" aria-labelledby="list-google-deleteInfo-list">
+                  <div class="card">
+                    <div class="card-body">
+                      <h4 class="card-title">Cancellazione Account</h4>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#GoogleexampleModal">
+                        Cancella Dati
+                      </button>
+                      <!-- Modal -->
+                      <div class="modal fade" id="GoogleexampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Cancellazione Account</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Sei sicuro di voler eliminare i dati dell'account Google all'interno del Database ?
+                            </div>
+                            <div class="modal-footer">
+                              <button id="annullaGoogleModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                              <form action="/eliminazione-account-Google"><button id="btn-eliminazione-definitiva" type="submit" class="btn btn-primary">Elimina</button></form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="tab-pane fade show active" id="panel-biglietti" role="tabpanel" aria-labelledby="list-biglietti-list">
+                    <b><p id="casoZeroBiglietti"></p></b> 
+                    <div id="carouselBiglietti" class="owl-carousel owl-theme"></div>
+
+                  </div>
+
+                </div>
+           
+              <div>
+ 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
+
+
+
