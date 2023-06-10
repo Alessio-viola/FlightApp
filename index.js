@@ -1,20 +1,12 @@
 const express = require('express')
 const app = express()
-
-const constants = require("./configuration");
-
 // Express-Session utilizza i cookie per mantenere lo stato di sessione del client,
 // ma memorizza i dati della sessione sul server
 const session = require('express-session');
-app.use(session({
-    secret: 'il-mio-segreto-segretissimo',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {maxAge: 30 * 60 * 1000, rolling: true}//cookie settati a 30 minuti e rolling a true fara si che la durata della sessione sara sempre rinnovata ad ogni richiesta
-}));
-
+const constants = require("./configuration");
 const {Client} = require('pg');
 const bcrypt = require('bcrypt');
+const flightsRetriever = require('./src/utils/flightsRetriever');
 
 const passportSetup = require("./config/passport-setup")
 const passport = require("passport")
@@ -28,8 +20,15 @@ app.use(express.urlencoded({extended: false}))
 
 // middleware che serve i file statici contenuti all'interno della directory public
 app.use(express.static("./"))
+app.use(express.static("./public"))
 app.use(express.static("./src/"))
 
+app.use(session({
+    secret: 'il-mio-segreto-segretissimo',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 30 * 60 * 1000, rolling: true}//cookie settati a 30 minuti e rolling a true fara si che la durata della sessione sara sempre rinnovata ad ogni richiesta
+}));
 
 const cookieParser = require("cookie-parser")
 app.use(cookieParser())
@@ -54,16 +53,115 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-//METODI GET 
+//CHATGPT
 
-app.get("/about-us",(req,res)=>{
-    res.sendFile('aboutUs.html', {root: __dirname + "/src/routes/aboutUs/"})
-})
+const { Configuration, OpenAIApi } = require("openai");
+require("dotenv").config();
 
-app.get("/api/sign-in", (req, res) => {
-    res.sendFile('signin.html', {root: __dirname + "/src/routes/signin/"})
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
+const openai = new OpenAIApi(configuration);
+
+async function runCompletion(prompt, maxTokens) {
+  let response = "";
+
+  try {
+    while (true) {
+      const completion = await openai.createCompletion({
+        model: "text-davinci-003",
+        prompt: prompt,
+        max_tokens: maxTokens,
+      });
+
+      const choiceText = completion.data.choices[0].text;
+      response += choiceText;
+
+      if (completion.data.choices[0].finish_reason === "stop") {
+        break;
+      }
+
+      prompt = choiceText.trim(); // Utilizza la risposta come prompt per la prossima iterazione
+      maxTokens -= completion.data.choices[0].tokens_used;
+    }
+
+    return response;
+  } catch (error) {
+    if (error.response && error.response.status === 429) {
+      console.log("Hai finito le richieste possibili che puoi fare");
+      await delay(3000); // Ritardo di 3 secondi prima di riprovare
+      return await runCompletion(prompt, maxTokens); // Riprova la richiesta
+    } else {
+      console.error(error);
+      return response; // Ritorna la risposta finora generata in caso di errore
+    }
+  }
+}
+
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+app.post("/message-processing", async (req, res) => {
+  const message = req.body.message; // Analizza la richiesta
+  console.log(message);
+
+  const maxTokens = 1000; // Limite massimo di token per risposta
+
+  const response = await runCompletion(message, maxTokens); // Elabora la risposta
+  
+  //salvo all'interno del DB le domande e le risposte 
+  let email
+  if(req.user || req.session.user){//se l'utente è loggato
+    if(req.user){
+        email = req.user.email;
+    }
+    else{
+        email = req.session.user;
+    }
+    const query = 'INSERT INTO chat (email,domanda,risposta) VALUES ($1, $2, $3)';
+    const values = [email, message, response];
+    try {
+        const resultQuery = await client.query(query, values);
+        res.status(200)
+    } catch (error) {
+        return res.status(500).send('Error');
+    }
+  }
+
+  res.send(response); // Invia la risposta
+});
+
+
+app.get("/chat",(req,res)=>{
+    res.sendFile('chatgptPage.html', {root: __dirname + "/src/routes/chatgptPage/"})
+})
+
+app.get("/get-chat",async (req,res)=>{
+    
+    if(req.user && req.session.user) return ;
+    let email
+    if(req.user){
+        email = req.user.email
+    }else {email = req.session.user}
+    
+    if(email != undefined){
+        const query = 'SELECT * FROM chat WHERE email = $1';
+        const values = [email];
+        try {
+            const resultQuery = await client.query(query, values);
+            res.status(200)
+            console.log(resultQuery.rows)
+            return res.send(resultQuery.rows)
+        } catch (error) {
+            return res.status(500).send('Error');
+        }
+    }
+    
+})
+
+//METODI GET
 app.get("/", (req, res) => {
     //link per andare alla pagina del form
     res.sendFile(`.${routesDir}/homepage/homepage.html`, {root: __dirname});
@@ -77,20 +175,22 @@ app.get("/api/sign-up", (req, res) => {
 app.get("/avvenuta-iscrizione", (req, res) => {
     res.sendFile('avvenuta_iscrizione.html', {root: __dirname + "/src/routes/avvenuta_iscrizione/"})
 })
+app.get("/about-us",(req,res)=>{
+    res.sendFile('aboutUs.html', {root: __dirname + "/src/routes/aboutUs/"})
+})
+
 app.get("/flights", (req, res) => {
     res.sendFile(`.${routesDir}/flights/flights.html`, {root: __dirname});
 });
 app.get("/booking", (req, res) => {
     res.sendFile(`.${routesDir}/booking/booking.html`, {root: __dirname});
 });
+app.get("/tracker", (req, res) => {
+    res.sendFile(`.${routesDir}/tracker/tracker.html`, {root: __dirname});
+});
 app.get("/profile", (req, res) => {
     res.sendFile('profilePage.html', {root: __dirname + "/src/routes/profilePage/"})
 })
-
-app.get('/dashboard', (req, res) => {
-    res.sendFile('/homepage.html', {root: __dirname + "/src/routes/homepage/"})
-});
-
 app.get("/retrieveFlights", async (req, res) => {
     try {
         let flights = await flightsRetriever.retrieveFlights(req);
@@ -100,15 +200,6 @@ app.get("/retrieveFlights", async (req, res) => {
         res.send(e);
     }
 });
-
-app.get("/api/sign-up", (req, res) => {
-    res.sendFile('signup.html', {root: __dirname + "/src/routes/signup/"})
-});
-
-app.get("/avvenuta-iscrizione", (req, res) => {
-    res.sendFile('avvenuta_iscrizione.html', {root: __dirname + "/src/routes/avvenuta_iscrizione/"})
-})
-
 
 //endpoint che restituisce i biglietti prenotati dall'utente
 app.get("/biglietti-prenotati", async (req, res) => {
@@ -123,6 +214,7 @@ app.get("/biglietti-prenotati", async (req, res) => {
         email = req.user.email
         userIsIn = "googleusers"
     }
+//'SELECT id,biglietti.email,data,codicepartenza,codicearrivo,durata,orapartenza,oraarrivo,nomecompagnia,postonumero,cittapartenza,cittaarrivo,nome,cognome,username from biglietti JOIN ' + userIsIn + ' ON biglietti.email = ' + userIsIn + '.email WHERE biglietti.email = $1'
     const query = 'SELECT biglietti.id,biglietti.email,data,codicepartenza,codicearrivo,durata,orapartenza,oraarrivo,nomecompagnia,postonumero,cittapartenza,cittaarrivo,nome,cognome,username from biglietti JOIN ' + userIsIn + ' ON biglietti.email = ' + userIsIn + '.email WHERE biglietti.email = $1';
     const values = [email];
     try {
@@ -211,98 +303,28 @@ app.get("/eliminazione-account", requireAuth, async (req, res) => {
     }
 });
 
+// Pagina protetta
+app.get('/dashboard', (req, res) => {
+    res.sendFile('/homepage.html', {root: __dirname + "/src/routes/homepage/"})
+});
 
-//CODICI DI ERRORE 
-// 1000 --> password e conferma_password diverse
-// 1001 --> old_password errata
-// success --> password aggiornata correttamente 
+// Gestione del logout
+app.get('/logout', (req, res) => {
 
-app.post("/reset-password", requireAuth, async (req, res) => {
-    console.log(req.session)
-    const email = req.session.user
-    const {old_pass, new_pass, conf_new_pass} = req.body
-    //gestione errore password diverse
-    if (new_pass !== conf_new_pass) {
-        return res.send({code: 1000}).status(200)
-    }
-    const query = 'SELECT pass from Credenziali WHERE email = $1';
-    const values = [email];
+    //to reset the right navbar when the client logged with google and press logout
+    res.clearCookie("logged")
+    res.clearCookie("nameUser");
+    res.clearCookie("photoUser");
 
-    try {
-        const resultQuery = await client.query(query, values);
-
-        const result = await bcrypt.compare(old_pass, resultQuery.rows[0].pass);
-
-        if (result === true) {
-            const saltRounds = 10
-            const new_pass_crypted = await bcrypt.hash(new_pass, saltRounds)
-            const query1 = "UPDATE Credenziali SET pass = $1 WHERE email = $2";
-            const values1 = [new_pass_crypted, email]
-            const resultQuery1 = await client.query(query1, values1)
-            res.send({code: "success"})
-            res.status(200);
+    //to clear session 
+    req.session.destroy(err => {
+        if (err) {
+            console.log(err);
         } else {
-            return res.send({code: 1001}).status(200);
+            res.redirect('/api/sign-in');
         }
-
-    } catch (error) {
-        res.status(500).send('Error');
-    }
-})
-
-//CODICI DI ERRORE
-// success --> passato il controllo sulla password
-// 1000 --> passwords are not equal
-// 1001 --> wrong password after 
-app.post("/cancellazione-account", requireAuth, async (req, res) => {
-
-    const {pass, conf_pass} = req.body
-    if (pass !== conf_pass) {
-        return res.send({error_code: 1000}).status(200)
-    } else {
-
-        const email = req.session.user
-        const query = 'SELECT pass from Credenziali WHERE email = $1';
-        const values = [email];
-
-        try {
-            const resultQuery = await client.query(query, values);
-
-            const result = await bcrypt.compare(pass, resultQuery.rows[0].pass);
-
-            if (result === true) {
-                return res.send({error_code: "success"}).status(200)
-
-            } else {
-                return res.send({error_code: 1001}).status(200);
-            }
-
-        } catch (error) {
-            res.status(500).send('Error');
-        }
-    }
-})
-
-
-//auth with google
-app.get("/auth/google", passport.authenticate("google", {
-    scope: ["profile", "email"] // the user have to puts the profile informations
-}));
-
-//callback route for google to redirect to 
-//we have to puts passport middleware also hero to exchange code in the url for profile information
-app.get("/auth/google/redirect", passport.authenticate("google"), (req, res) => {
-
-    req.session.loggedin = true;//settato per accesso alle pagine protette
-
-    //res.send(req.user)// ci sarà l'id restituitoci da google
-    res.cookie("logged", true)
-    res.cookie("nameUser", req.user.name.givenName)//utilizzo dei cookie per inviare informazioni dal server al client
-    res.cookie("photoUser", req.user.photos[0].value)
-
-    res.redirect("/")
-})
-
+    });
+});
 
 
 //METODI POST
@@ -402,4 +424,125 @@ app.post("/api/sign-in", (req, res) => {
     })
 });
 
+
+//CODICI DI ERRORE 
+// 1000 --> password e conferma_password diverse
+// 1001 --> old_password errata
+// success --> password aggiornata correttamente 
+
+app.post("/reset-password", requireAuth, async (req, res) => {
+    console.log(req.session)
+    const email = req.session.user
+    const {old_pass, new_pass, conf_new_pass} = req.body
+    //gestione errore password diverse
+    if (new_pass !== conf_new_pass) {
+        return res.send({code: 1000}).status(200)
+    }
+    const query = 'SELECT pass from Credenziali WHERE email = $1';
+    const values = [email];
+
+    try {
+        const resultQuery = await client.query(query, values);
+
+        const result = await bcrypt.compare(old_pass, resultQuery.rows[0].pass);
+
+        if (result === true) {
+            const saltRounds = 10
+            const new_pass_crypted = await bcrypt.hash(new_pass, saltRounds)
+            const query1 = "UPDATE Credenziali SET pass = $1 WHERE email = $2";
+            const values1 = [new_pass_crypted, email]
+            const resultQuery1 = await client.query(query1, values1)
+            res.send({code: "success"})
+            res.status(200);
+        } else {
+            return res.send({code: 1001}).status(200);
+        }
+
+    } catch (error) {
+        res.status(500).send('Error');
+    }
+})
+
+//CODICI DI ERRORE
+// success --> passato il controllo sulla password
+// 1000 --> passwords are not equal
+// 1001 --> wrong password after 
+app.post("/cancellazione-account", requireAuth, async (req, res) => {
+
+    const {pass, conf_pass} = req.body
+    if (pass !== conf_pass) {
+        return res.send({error_code: 1000}).status(200)
+    } else {
+
+        const email = req.session.user
+        const query = 'SELECT pass from Credenziali WHERE email = $1';
+        const values = [email];
+
+        try {
+            const resultQuery = await client.query(query, values);
+
+            const result = await bcrypt.compare(pass, resultQuery.rows[0].pass);
+
+            if (result === true) {
+                return res.send({error_code: "success"}).status(200)
+
+            } else {
+                return res.send({error_code: 1001}).status(200);
+            }
+
+        } catch (error) {
+            res.status(500).send('Error');
+        }
+    }
+})
+
+
+//auth with google
+app.get("/auth/google", passport.authenticate("google", {
+    scope: ["profile", "email"] // the user have to puts the profile informations
+}));
+
+//callback route for google to redirect to 
+//we have to puts passport middleware also hero to exchange code in the url for profile information
+app.get("/auth/google/redirect", passport.authenticate("google"), (req, res) => {
+
+    req.session.loggedin = true;//settato per accesso alle pagine protette
+
+    //res.send(req.user)// ci sarà l'id restituitoci da google
+    res.cookie("logged", true)
+    res.cookie("nameUser", req.user.name.givenName)//utilizzo dei cookie per inviare informazioni dal server al client
+    res.cookie("photoUser", req.user.photos[0].value)
+
+    res.redirect("/")
+})
+
+
+app.post('/save-ticket', (req, res) => {
+    let flight = req.body;
+
+    let email = req.session.user ? req.session.user : req.user.email
+    const query = 'INSERT INTO Biglietti (id, email, data, codicePartenza, codiceArrivo, durata, oraPartenza, oraArrivo, nomeCompagnia, postoNumero, cittapartenza, cittaarrivo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
+    const values = [Date.now(), email, flight.date, flight.depCode, flight.arrCode, flight.duration, flight.depTime, flight.arrTime, flight.airlineName, flight.seat, flight.depCity, flight.arrCity];
+
+    client.query(query, values, (err, result) => {
+        if (err) {
+            res.status(400);
+            res.send(err);
+        } else {
+            res.status(200);
+            res.send('success');
+        }
+    })
+})
+
+//middleware che in caso di utente non loggato con google lo redirecta sulla pagina di login
+const authCheck = (req, res, next) => {
+    if (!req.user) {//if user is not logged in
+        res.redirect("/sign-in");
+    } else {
+        next();
+    }
+}
+
 app.listen(3000);
+  

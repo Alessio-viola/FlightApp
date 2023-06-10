@@ -17,11 +17,15 @@
   },
   "homepage": "https://github.com/Alessio-viola/FlightApp#readme",
   "dependencies": {
+    "airlines-iata-codes": "^1.0.1",
+    "amadeus": "^8.0.0",
     "bcrypt": "^5.1.0",
     "bootstrap": "^5.2.3",
     "cookie-parser": "^1.4.6",
+    "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "openai": "^3.2.1",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.11.0"
