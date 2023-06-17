@@ -49,16 +49,18 @@ USER STORIES
 
 24. Possibilità di cancellare i dati del proprio account Google se si è loggati tramite l'autenticazione OAuth 2.0 e possibilità di cancellare i propri dati se si è loggati tramite un account che ha effettuato la registrazione tramite il form;
 
-25. Come utente, vorrei avere uno spazio dedicato al cambio della password nel caso in cui non sia loggato tramite Google;
+25. Come utente vorrei che, una volta cancellato l'account, vengano cancellati anche i biglietti e la chat relativi ad esso;
 
-26. Come utente, vorrei avere una sezione dedicata al logout, in modo tale da non rimanere loggato con i dati del mio profilo;
+26. Come utente, vorrei avere uno spazio dedicato al cambio della password nel caso in cui non sia loggato tramite Google;
 
-27. Possibilità di utilizzare una funzionalità 'tracker' che ha lo scopo di tracciare in tempo reale l'aereo desiderato;
+27. Come utente, vorrei avere una sezione dedicata al logout, in modo tale da non rimanere loggato con i dati del mio profilo;
 
-28. Come utente, vorrei avere la possibilità di interfacciarmi tramite una chat in modo tale da avere dei consigli sulla possibile meta di destinazione;
+28. Possibilità di utilizzare una funzionalità 'tracker' che ha lo scopo di tracciare in tempo reale l'aereo desiderato;
 
-29. Come utente loggato vorrei avere la chat permanente in modo tale da poter vedere tutti i messaggi precedenti che ho inviato;
+29. Come utente, vorrei avere la possibilità di interfacciarmi tramite una chat in modo tale da avere dei consigli sulla possibile meta di destinazione;
 
-30. Come utente loggato vorrei avere la possibilità di cancellare tutti i messaggi inviati alla chat (pulire la chat).
+30. Come utente loggato vorrei avere la chat permanente in modo tale da poter vedere tutti i messaggi precedenti che ho inviato;
+
+31. Come utente loggato vorrei avere la possibilità di cancellare tutti i messaggi inviati alla chat (pulire la chat).
 
 
