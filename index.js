@@ -6,12 +6,12 @@ const session = require('express-session');
 const constants = require("./configuration");
 const {Client} = require('pg');
 const bcrypt = require('bcrypt');
-const flightsRetriever = require('./src/utils/flightsRetriever');
+const flightsRetriever = require('./utils/flightsRetriever');
 
 const passportSetup = require("./config/passport-setup")
 const passport = require("passport")
 
-const routesDir = '/src/routes';
+const routesDir = '/views';
 
 
 // middleware utilizzato per prendere i dati da form
@@ -20,8 +20,7 @@ app.use(express.urlencoded({extended: false}))
 
 // middleware che serve i file statici contenuti all'interno della directory public
 app.use(express.static("./"))
-app.use(express.static("./public"))
-app.use(express.static("./src/"))
+app.use(express.static("./views/"))
 
 app.use(session({
     secret: 'il-mio-segreto-segretissimo',
@@ -135,7 +134,7 @@ app.post("/message-processing", async (req, res) => {
 
 
 app.get("/chat",(req,res)=>{
-    res.sendFile('chatgptPage.html', {root: __dirname + "/src/routes/chatgptPage/"})
+    res.sendFile('chatgptPage.html', {root: __dirname + "/views/chatgptPage/"})
 })
 
 app.get("/get-chat",async (req,res)=>{
@@ -166,17 +165,18 @@ app.get("/", (req, res) => {
     //link per andare alla pagina del form
     res.sendFile(`.${routesDir}/homepage/homepage.html`, {root: __dirname});
 });
+
 app.get("/api/sign-in", (req, res) => {
-    res.sendFile('signin.html', {root: __dirname + "/src/routes/signin/"})
+    res.sendFile('signin.html', {root: __dirname + "/views/signin/"})
 });
 app.get("/api/sign-up", (req, res) => {
-    res.sendFile('signup.html', {root: __dirname + "/src/routes/signup/"})
+    res.sendFile('signup.html', {root: __dirname + "/views/signup/"})
 });
 app.get("/avvenuta-iscrizione", (req, res) => {
-    res.sendFile('avvenuta_iscrizione.html', {root: __dirname + "/src/routes/avvenuta_iscrizione/"})
+    res.sendFile('avvenuta_iscrizione.html', {root: __dirname + "/views/avvenuta_iscrizione/"})
 })
 app.get("/about-us",(req,res)=>{
-    res.sendFile('aboutUs.html', {root: __dirname + "/src/routes/aboutUs/"})
+    res.sendFile('aboutUs.html', {root: __dirname + "/views/aboutUs/"})
 })
 
 app.get("/flights", (req, res) => {
@@ -189,7 +189,7 @@ app.get("/tracker", (req, res) => {
     res.sendFile(`.${routesDir}/tracker/tracker.html`, {root: __dirname});
 });
 app.get("/profile", (req, res) => {
-    res.sendFile('profilePage.html', {root: __dirname + "/src/routes/profilePage/"})
+    res.sendFile('profilePage.html', {root: __dirname + "/views/profilePage/"})
 })
 app.get("/retrieveFlights", async (req, res) => {
     try {
@@ -200,6 +200,12 @@ app.get("/retrieveFlights", async (req, res) => {
         res.send(e);
     }
 });
+
+app.get("/dashboard", (req, res) => {
+    //link per andare alla pagina del form
+    res.sendFile(`.${routesDir}/homepage/homepage.html`, {root: __dirname});
+});
+
 
 //endpoint che restituisce i biglietti prenotati dall'utente
 app.get("/biglietti-prenotati", async (req, res) => {
@@ -301,11 +307,6 @@ app.get("/eliminazione-account", requireAuth, async (req, res) => {
     } catch (error) {
         return res.status(500).send('Cancellazione account non è andata a buon fine');
     }
-});
-
-// Pagina protetta
-app.get('/dashboard', (req, res) => {
-    res.sendFile('/homepage.html', {root: __dirname + "/src/routes/homepage/"})
 });
 
 // Gestione del logout
@@ -519,6 +520,7 @@ app.get("/auth/google/redirect", passport.authenticate("google"), (req, res) => 
 
 app.post('/save-ticket', (req, res) => {
     let flight = req.body;
+    console.log(flight)
 
     let email = req.session.user ? req.session.user : req.user.email
     const query = 'INSERT INTO Biglietti (id, email, data, codicePartenza, codiceArrivo, durata, oraPartenza, oraArrivo, nomeCompagnia, postoNumero, cittapartenza, cittaarrivo) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';

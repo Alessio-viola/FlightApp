@@ -5,15 +5,15 @@ USER STORIES
 
 2. Come utente, voglio che mi venga inviata una mail una volta terminata la registrazione al sito;
 
-3. Come utente, voglio che in fase di registrazione il mio username e-mail siano unici in modo tale che possano distinguersi da altri account registrati;
+3. Come utente, voglio che in fase di registrazione il mio username e la e-mail siano unici in modo tale che possano distinguersi da altri account registrati;
 
-4. Viene effettuato in fase di registrazione il controllo sulla password (con la presenza obbligatoria di 1 carattere maiuscolo,1 minuscolo, 1 numero, 1 carattere speciale, una lunghezza minima di 8 caratteri) per garantire un maggior livello di sicurezza;
+4. Viene effettuato in fase di registrazione il controllo sulla password (con la presenza obbligatoria di 1 carattere maiuscolo,1 minuscolo, 1 numero, 1 carattere speciale, una lunghezza minima di 12 caratteri) per garantire un maggior livello di sicurezza;
 
 5. Come utente, voglio poter accedere al sito tramite le credenziali immesse nel form di registrazione e accedere alla sezione dedicata;
 
 6. Come utente, voglio poter accedere al sito tramite l'autenticazione OAuth 2.0 di google;
 
-7. Sia nel form di registrazione sia nel form di login, viene effettuato un controllo sul campo e-mail tramite un'espressione regolare affinché possa essere garantito un livello maggiore di sicurezza per la web application;
+7. Sia nel form di registrazione sia nel form di login, viene effettuato un controllo lato server sul campo e-mail tramite un'espressione regolare affinché possa essere garantito un livello maggiore di sicurezza per la web application;
 
 8. Nel form di login si ha una funzionalità dedicata alla password dimenticata, tramite la quale viene inviata una email con un token di 5 cifre e viene fuori un popup: nel caso in cui il token inserito nel form del popup corrisponde con il codice inviato per email viene aggiunto il campo Nuova Password e il campo Conferma Nuova Password, altrimenti viene generato un alert nel quale è dichiarato che il token non corrisponde;
 
@@ -25,7 +25,9 @@ USER STORIES
 
 12. Come utente, desidero poter effettuare una ricerca dei voli impostando casualmente la destinazione d'arrivo;
 
-13. Come utente, voglio avere di selezionare voli solo anadata;
+13. Come utente, voglio avere la possibilita di prenotare il volo solo per l'andata, selezionando l'apposita data;
+
+13. Come utente, voglio avere la possibilita di prenotare voli per andata e ritorno selezionando le due rispettive date
 
 14. Come utente, voglio poter visualizzare i dettagli dei voli, inclusi gli orari di partenza e arrivo, le compagnie aeree e le tariffe, per poter prendere una decisione informata sulla prenotazione. Le informazioni elencate precedentemente veongono fornite dall'API Amadeus;
 
@@ -33,9 +35,9 @@ USER STORIES
 
 16. Come utente, voglio che in fase di prenotazione del volo mi venga fatto un riepilogo sulle informazioni del viaggio(come scali, durata e prezzo) in modo da poter confermare l'ordine revisionandolo;
 
-17. Come utente voglio sia che il posto mi venga assegnato automaticamente, ma voglio anche avere la possibilità di scegliere il posto in base alla mia preferenza;
+17. Come utente voglio sia che il posto mi venga assegnato automaticamente(?), ma voglio anche avere la possibilità di scegliere il posto in base alla mia preferenza;
 
-18. Come utente voglio che mi venga fornita una simulazione della visuale che posso avere scegliendo un determinato posto;
+?18. Come utente voglio che mi venga fornita una simulazione della visuale che posso avere scegliendo un determinato posto;
 
 19. Nella pagina in cui viene confermato l'ordine e scelto il posto, è presente un'opzione di scelta che potrebbe far lievitare il prezzo totale. La scelta in questione riguarda l'aggiunta del bagaglio da stiva;
 

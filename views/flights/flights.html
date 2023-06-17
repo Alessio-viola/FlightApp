@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homepage</title>
+
+    <!-- Link a font Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <script type="text/javascript" src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <script type="text/javascript" src="/views/common/bar.js"></script>
+    <script type="text/javascript" src="/utils/constants.js"></script>
+    <script type="text/javascript" src="/views/homepage/homepage.js"></script>
+    <link rel="stylesheet" href="/views/homepage/homepage.css">
+    <script type="text/javascript" src="/views/flights/flights.js"></script>
+    <link rel="stylesheet" href="/views/flights/flights.css">
+</head>
+<body style="height: 2000px" onload="loadBar();">
+
+<div id="navbar" class="mb-4"></div>
+
+<!-- New search bar -->
+<form id="bookerForm">
+    <div class="params-selector d-flex flex-wrap flex-row">
+        <div class="d-flex flex-row">
+            <!-- Departure field -->
+            <div class="form-group form-floating form-outline flex-grow-1">
+                <input type="text" class="form-control" name="departure" id="departureField" list="airportsList"
+                       autocomplete="on" placeholder="Partenza" required>
+                <label style="margin-left: 0px;" for="departureField">Partenza</label>
+                <datalist id="airportsList"></datalist>
+                <script>loadAirportsList();</script>
+            </div>
+            <!-- Arrival field -->
+            <div class="form-group form-floating form-outline flex-grow-1">
+                <input type="text" class="form-control" id="arrivalField" list="airportsList" placeholder="Arrivo"
+                       required>
+                <label style="margin-left: 0px;" for="arrivalField">Arrivo</label>
+            </div>
+        </div>
+
+        <div class="d-flex flex-row">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <div class="d-flex flex-row" style="column-gap: 12px;">
+                    <!-- Dep Date field -->
+                    <div class="form-group row">
+                        <div class="form-group form-floating form-outline">
+                            <input type="date" class="form-control" id="departureDateField" placeholder="Dal:" required>
+                            <label for="departureDateField">Dal:</label>
+                        </div>
+                    </div>
+                    <!-- Arr Date field -->
+                    <div class="form-group row">
+                        <div class="form-group form-floating form-outline" id="arrivalDateFieldCont">
+                            <input type="date" class="form-control" id="arrivalDateField" placeholder="Al:">
+                            <script>setMinDate();</script>
+                            <label for="arrivalDateField">Al:</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-check">
+                    <input class="form-check-input" type="checkbox" id="onlyDepCheckbox"
+                           onchange="toggleArrivalDate();">
+                    <label class="form-check-label" for="onlyDepCheckbox">
+                        Solo Andata
+                    </label>
+                </div>
+            </div>
+
+            <!-- People field -->
+            <div class="form-group row">
+                <div class="form-group form-floating form-outline">
+                    <input type="number" class="form-control" id="adultsNumField" placeholder="Adulti" value="1"
+                           max="10" required>
+                    <label for="adultsNumField">Adulti</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="form-group form-floating form-outline">
+                    <input type="number" class="form-control" id="childrenNumField" placeholder="Bambini" value="0"
+                           max="10"
+                           required>
+                    <label for="childrenNumField">Bambini</label>
+                </div>
+            </div>
+
+            <!-- New Search btn -->
+            <button type="submit" class="primary-btn">Nuova Ricerca</button>
+        </div>
+    </div>
+</form>
+
+<div id="listContainer">
+    <div v-if="isLoading" class="d-flex justify-content-center align-items-center">
+        <img class="info-icon"
+             src="https://icon-library.com/images/spinner-icon-gif/spinner-icon-gif-0.jpg"
+             alt="Loading Spinner"/>
+    </div>
+    <div v-if="!isLoading && isError" class="d-flex flex-column justify-content-center align-items-center">
+        <img class="info-icon"
+             src="/assets/icons/warning.png"
+             alt="Warning Sign"/>
+        <p>Si è verificato un errore durante la ricerca dei voli. Si prega di riprovare più tardi.</p>
+    </div>
+    <div v-if="!isLoading && !isError" class="flight-card2 mb-4" v-for="item in results" :key="item.id">
+        <div class="d-flex flex-row flex-wrap justify-content-around align-items-center">
+            <div class="d-flex flex-column">
+                <!-- Create one row for departure and one for back trip-->
+                <div v-for="it in item.flights" :key="it.id">
+                    <div class="flight-container mb-3">
+                        <img class="airline-logo2" :src="it.airlineLogo" alt="Logo of the airline">
+
+                        <div class="d-flex flex-row">
+                            <div class="container-section">
+                                <p class="air-code" aria-label="depAirCode">{{it.dep}}</p>
+                                <p class="time" aria-label="depTime">{{it.depTime}}</p>
+                            </div>
+                            <div class="container-section" style="height: 100%;">
+                                <p class="duration">2h 15m</p>
+                                <img v-if="it.id === 0" class="airplane-arrow" src="/assets/icons/airplane.png"
+                                     style="transform: scaleX(-1);" alt="Right Arrow">
+                                <img v-if="it.id === 1" class="airplane-arrow" src="/assets/icons/airplane.png"
+                                     style="transform: scaleX(1);" alt="Left Arrow">
+                                <p class="stopovers">
+                                    +{{it.stopovers === 1 ? '1 scalo' : it.stopovers + ' scali'}}</p>
+                            </div>
+                            <div class="container-section">
+                                <p class="air-code" aria-label="arrAirCode">{{it.arr}}</p>
+                                <p class="time" aria-label="arrTime">{{it.arrTime}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="container-section">
+                <p class="price-h">Prezzo totale:</p>
+                <p class="price">€{{item.price}}</p>
+                <button type="submit" class="primary-btn" onclick="goToBooking(this);" :data-flightid="item.id">Prenota
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
