@@ -42,7 +42,7 @@ $(document).ready(function() {
                 localStorage.setItem("email", email)
                 localStorage.setItem('authenticated', 'true');
                 localStorage.setItem('nameUser', data.username);
-                window.location.href = "http://localhost:3000/";
+                window.location.href = "/";
             }else{
                 $("#error-message").text("Credenziali errate").show();
             }

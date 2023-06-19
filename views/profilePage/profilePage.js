@@ -186,7 +186,7 @@ $(document).ready(function() {
           response.forEach(function(item) {
          
           // crea un nuovo iframe per ogni biglietto
-          var iframe = $('<iframe src="/src/routes/common/biglietto.html"></iframe>');
+          var iframe = $('<iframe src="/views/common/biglietto.html"></iframe>');
 
           // carica i dati del biglietto nell'iframe
           iframe.on("load", function() {

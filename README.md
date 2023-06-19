@@ -105,3 +105,18 @@ https://fonts.google.com/specimen/Lato
 -vedere quanto è complicato aggiungere funzionalità hotel e alloggi
 
 -aggiungere nelle user stories biglietti acquistati, tracker e cancellazione dati, logout, cambia passw, chat
+
+### AviationStack API per funzionalità tracker
+
+Visto che il piano free dell'API non offre connessione https per le richieste e visto che noi utiliziamo https, dobbiamo disabilitare l'opzione mixed content del browser.
+
+Su Firefox bisogna fare ciò: 
+-Apri Firefox e digita "about:config" nella barra degli indirizzi.
+-Cerca l'opzione security.mixed_content.block_display_content e security.mixed_content.block_active_content.
+-Imposta entrambe le opzioni su false facendo doppio clic su di esse.
+
+Su Chrome invece:
+-Apri Chrome e digita chrome://flags nella barra degli indirizzi.
+-Cerca l'opzione "Insecure origins treated as secure" (Origini non sicure trattate come sicure).
+-Abilita questa opzione facendo clic sul menu a discesa e selezionando "Enable" (Abilita).
+-Riavvia Chrome per applicare le modifiche.

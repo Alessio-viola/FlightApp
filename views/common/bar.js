@@ -53,10 +53,10 @@ function loadBar() {
 function UnauthloginOrSignup(login, signup) {
     let f = document.querySelector("#unauthForm");
     if (login == true) {
-        f.action = "http://localhost:3000/api/sign-in/";
+        f.action = "/api/sign-in";
     }
     if (signup == true) {
-        f.action = "http://localhost:3000/api/sign-up/";
+        f.action = "/api/sign-up";
     }
 }
 

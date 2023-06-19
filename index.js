@@ -1,5 +1,17 @@
 const express = require('express')
 const app = express()
+
+const https = require('https');
+const fs = require('fs');
+
+//Configurazione Certificato SSL
+
+const options = {
+    cert: fs.readFileSync('./certificate.crt'),
+    key: fs.readFileSync('./private.key')
+  };
+  
+
 // Express-Session utilizza i cookie per mantenere lo stato di sessione del client,
 // ma memorizza i dati della sessione sul server
 const session = require('express-session');
@@ -545,6 +557,14 @@ const authCheck = (req, res, next) => {
         next();
     }
 }
+/*
+app.listen(3000,()=>{
+    console.log("Server http avviato sulla porta 3000")
+})
+*/
+const server = https.createServer(options, app);
 
-app.listen(3000);
+server.listen(3000, () => {
+  console.log('Server HTTPS avviato sulla porta 3000');
+});
   
