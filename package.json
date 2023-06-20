@@ -4,7 +4,8 @@
   "description": "<pre>  - src (codice sorgente)     - utils (files .js che svolgono funzionalità richieste da intera app)     - bootstrap     - routes (pagine app)       - common (cartella con file condivisi da varie pagine)       - nome_pagina (per ogni pagina)         - nome_pagina.html         - nome_pagina.js         - nome_pagina.css  - assets (risorse ausiliarie)     - images     - fonts  - index.js  - global.css  - configuration.js </pre>",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "mocha --require @babel/register"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "pg": "^8.11.0"
   },
   "devDependencies": {
+    "mocha": "^10.2.0",
     "nodemon": "^2.0.22"
   }
 }
