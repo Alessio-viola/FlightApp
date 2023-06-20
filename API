@@ -6,25 +6,18 @@
         Amadeus è una delle principali società globali di tecnologia per l'industria del viaggio e del turismo. L'API Amadeus offre una vasta gamma di servizi e dati per facilitare lo sviluppo di applicazioni e soluzioni nel settore del viaggio.
         Nello specifico abbiamo selezionato la seguente funzionalità:
 
-             Prenotazioni di voli: L'API Amadeus consente di accedere a funzionalità di prenotazione di voli, inclusa la ricerca di voli disponibili, il recupero dei dettagli sui voli, la prenotazione di biglietti aerei e la gestione delle prenotazioni esistenti.
+             Prenotazioni di voli: l'API Amadeus consente di accedere a funzionalità di prenotazione di voli, inclusa la ricerca di voli disponibili, il recupero dei dettagli sui voli, la prenotazione di biglietti aerei e la gestione delle prenotazioni esistenti.
 
 
 
-3. API LAMINAR DATA
+3. API Aviation Stack
+        
+        L'API AviationStack è un servizio web che fornisce informazioni sul settore dell'aviazione attraverso richieste e risposte basate sul protocollo HTTP. L'API AviationStack offre funzionalità relative all'aviazione, tra cui informazioni sui voli, metadati sugli aeroporti, informazioni sugli orari di volo, dati sui codici di compagnie aeree, dati sulle rotte dei voli e altro ancora.
+        Nello specifico abbiamo selezionato la seguente funzionalià:
 
-        Laminar Data è un'API che offre dati e servizi per l'industria dell'aviazione. 
-        L'API consente di accedere a una vasta gamma di dati relativi ai voli, al traffico aereo e ad altre informazioni connesse.
-        Nello specifico abbiamo selezionato l'API Flight Data che fornisce una specifica selezione di servizi:
-
-            1. Orari dei voli: L'API può restituire informazioni sugli orari di partenza e arrivo dei voli per una data compagnia aerea o  aeroporto specifico.
-
-            2. Stato del volo: È possibile ottenere informazioni sullo stato dei voli in tempo reale, come il ritardo, l'arrivo in anticipo o la cancellazione di un volo.
-
-            3. Dati sulla rotta: L'API può fornire dettagli sulla rotta di un volo, come gli aeroporti di partenza e arrivo, la distanza percorsa e il tempo di volo previsto.
-
-            4. Informazioni sulle compagnie aeree: È possibile accedere a dati sulle compagnie aeree, come informazioni sulla flotta, le rotte servite e i dettagli di contatto.
+        -dati sui voli: l'API consente di ottenere informazioni in tempo reale sui voli, inclusi i dettagli sullo stato del volo, l'orario di partenza e di arrivo, la rotta del volo, l'aeromobile utilizzato e altro ancora.
 
 4. OpenAI Chat API
         
         L'API offre un modo semplice per interagire con il modello di ChatGPT.
-        Nello specifico la utilizziamo affinché possa esserci una chat per l'utente in modo tale da offrire conversazioni strutturate in quanto l'API permette di definire conversazioni strutturate tra un utente e il modello di ChatGPT.
+        Nello specifico la utilizziamo affinché possa esserci una chat per l'utente in modo tale da interagire con il bot in quanto l'API permette di definire conversazioni strutturate tra un utente e il modello di ChatGPT.

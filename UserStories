@@ -41,7 +41,7 @@ USER STORIES
 
 20. Nella pagina in cui viene confermato l'ordine e scelto il posto, è presente un'opzione di scelta che potrebbe far lievitare il prezzo totale. La scelta in questione riguarda l'aggiunta del bagaglio da stiva;
 
-21. Come utente, desidero che tutte le comunicazioni nel sistema siano crittografate con un certificato SSL/TLS per garantire una maggiore sicurezza durante la trasmissione dei dati;
+21. Come utente, desidero che tutte le comunicazioni nel sistema siano crittografate con un certificato SSL/TLS (autofirmato) per garantire una maggiore sicurezza durante la trasmissione dei dati;
 
 22. Come utente, vorrei avere uno spazio dedicato ai dati da me inseriti in fase di registrazione ed eventualmente poterli modificare(ad esempio Username ed e-mail);
 
