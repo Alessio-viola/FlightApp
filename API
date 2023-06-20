@@ -20,4 +20,4 @@
 4. OpenAI Chat API
         
         L'API offre un modo semplice per interagire con il modello di ChatGPT.
-        Nello specifico la utilizziamo affinché possa esserci una chat per l'utente in modo tale da interagire con il bot in quanto l'API permette di definire conversazioni strutturate tra un utente e il modello di ChatGPT.
+        Nello specifico la utilizziamo affinché possa esserci una chat per l'utente in modo tale da interagire con il bot in quanto l'API permette di definire conversazioni strutturate tra un utente e il modello di ChatGPT. 
