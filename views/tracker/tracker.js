@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 let vueContext;
 let icaoJson = null;
 
@@ -11,6 +9,8 @@ $(document).ready(() => {
                 isError: false, // Whether the API to retrieve results returned an error
                 startCity: '',
                 arrCity: '',
+                depTimeStamp: '',
+                arrTimeStamp: '',
                 arcDegrees: -90,
             };
         },
@@ -32,9 +32,9 @@ async function retrieveFlightInfo() {
     //url.searchParams.append('user_key', 'c33b9571ea8ca09bad4dc89d5c88635d');
     
     //AVIATIONSTACK API
-    const accessKey = "24a092508e370f9f0cd0478ff7e877f5" 
-    let url = new URL(`http://api.aviationstack.com/v1/flights?access_key=${accessKey}&flight_iata=${code}`)
-    //let url = new URL('https://localhost:3000/example-tracker-aviationstack.json'); // DEBUG uncomment url above and comment this to get real data
+    const accessKey = "1aa26f3f41c3aa1f86d4554d94ab9063" 
+    //let url = new URL(`http://api.aviationstack.com/v1/flights?access_key=${accessKey}&flight_icao=${code}`)
+    let url = new URL('https://localhost:3000/example-tracker-aviationstack.json'); // DEBUG uncomment url above and comment this to get real data
 
     $.get({
             url: url,
@@ -44,7 +44,9 @@ async function retrieveFlightInfo() {
                 //elimino aereo precedente 
                 const parentElement = document.getElementById("arc")
                 const childElement = parentElement.firstChild;
-                parentElement.removeChild(childElement);
+                if(childElement){
+                    parentElement.removeChild(childElement);
+                }
                 
                 /* //laminardata api response
                 if (res.features.length === 0) {
@@ -73,46 +75,15 @@ async function retrieveFlightInfo() {
                         vueContext.isError = true;
                     } else {
                         let obj = res.data[0]
-                        let depTime = obj.departure.estimated || obj.departure.actual;
-                        let arrTime = obj.arrival.estimated || obj.arrival.actual;
+                        let depTime = obj.departure.actual_runway || obj.departure.estimated || obj.departure.scheduled;
+                        let arrTime = obj.arrival.actual_runway || obj.arrival.estimated || obj.arrival.scheduled;
 
-                        //let depTimeDate = new Date(depTime);
-                        //let arrTimeDate = new Date(arrTime);
-                        //const now = new Date();
-                        
                         if (!depTime || !arrTime) {
                             vueContext.isLoading = false;
                             vueContext.isError = true;
                             return;
                         }
-                        
-                        //timezones
-                        let depTimezone = obj.departure.timezone;
-                        let arrTimezone = obj.arrival.timezone;
-
-                        const depTimeDate = new Date(`${depTime}Z`);
-                        const arrTimeDate = new Date(`${arrTime}Z`);
-                        const depTimeOffset = depTimeDate.getTimezoneOffset() * 60000; // Convert minutes to milliseconds
-                        const arrTimeOffset = arrTimeDate.getTimezoneOffset() * 60000; // Convert minutes to milliseconds
-                      
-                        const depTimeMillis = depTimeDate.getTime() + depTimeOffset;
-                        const arrTimeMillis = arrTimeDate.getTime() + arrTimeOffset;
-
-                        const now = new Date();
-                        
-                        console.log("DepTimeDate",depTimeDate)
-                        
-                        const nowMillis = now.getTime();
-
-                        console.log("depTimeMillis",depTimeMillis)
-                        console.log("arrTimeMillis",arrTimeMillis)
-                        console.log("nowMillis",nowMillis)
-
-                        let arcPercentage = (nowMillis - depTimeMillis)/(arrTimeMillis-depTimeMillis) 
-
-                        //const depTimeUTC = depTimeDate.getTime() + depTimeDate.getTimezoneOffset() * 60000;
-                        //const arrTimeUTC = arrTimeDate.getTime() + arrTimeDate.getTimezoneOffset() * 60000;
-                        //const nowUTC = now.getTime() + now.getTimezoneOffset() * 60000;
+                    
 
                         // Get the trip starting and arriving point
                         //getCityFromICAO(obj.departure.aerodrome.scheduled).then(res => vueContext.startCity = res);
@@ -120,15 +91,42 @@ async function retrieveFlightInfo() {
                         vueContext.startCity = res.data[0].departure.airport
                         vueContext.arrCity = res.data[0].arrival.airport
 
-                        //console.log("nowUTC",nowUTC)
-                        //console.log("depUTC",depTimeUTC)
-                        //console.log("arrUTC",arrTimeUTC)
-
-                        //const arcPercentage = (nowUTC - depTimeUTC) / (arrTimeUTC - depTimeUTC);
 
 
-                        console.log("ciaoooooooooo")
-                        console.log("arcPercentage",arcPercentage)
+                        //orario di partenza convertito a UTC
+                        const depTimeUTC = new Date(depTime) //con questa riga lo converto in UTC 
+                        //orario di arrivo convertito in UTC
+                        const arrTimeUTC = new Date(arrTime)//con questa riga lo converto in UTC
+                        
+                        console.log(" arrivo UTC: ",arrTimeUTC);
+                        
+                        //orario now convertito in UTC
+                        const nowLocal = new Date();//questo non è convertito in UTC
+                        const nowUTC = new Date(nowLocal.getTime() - (nowLocal.getTimezoneOffset() * 60000));
+                        console.log("now utc ",nowUTC)
+                        
+                        let arcPercentage;
+                        if (depTimeUTC.getTime() > arrTimeUTC.getTime()) {
+                            arcPercentage = (nowUTC.getTime() - arrTimeUTC.getTime()) / (depTimeUTC.getTime() - arrTimeUTC.getTime());
+                        } else {
+                            arcPercentage = (nowUTC.getTime() - depTimeUTC.getTime()) / (arrTimeUTC.getTime() - depTimeUTC.getTime());
+                        }
+
+                        console.log("arcPercentage", arcPercentage);
+                        
+                        const options = { 
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            second: 'numeric'
+                            //timeZoneName: 'short' 
+                          };
+
+                        vueContext.depTimeStamp = depTimeUTC.toLocaleString('it-IT', options) + " UTC"; 
+                        vueContext.arrTimeStamp = arrTimeUTC.toLocaleString('it-IT', options) + " UTC";
+                        
 
                         // Set the percentage in the right bound
                         if (arcPercentage < 0) arcPercentage = 0;

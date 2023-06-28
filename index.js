@@ -151,7 +151,7 @@ app.get("/chat",(req,res)=>{
 
 app.get("/get-chat",async (req,res)=>{
     
-    if(req.user && req.session.user) return ;
+    if(req.user == undefined && req.session.user == undefined) return ; //in caso di utente non registrato
     let email
     if(req.user){
         email = req.user.email
@@ -170,6 +170,28 @@ app.get("/get-chat",async (req,res)=>{
         }
     }
     
+})
+
+app.get("/delete-chat",async (req,res)=>{
+    
+    if(req.user==undefined && req.session.user==undefined) return ; //in caso di utente non registrato
+    let email
+    if(req.user){
+        email = req.user.email
+    }else {email = req.session.user}
+    
+    if(email != undefined){
+        const query = 'DELETE FROM chat WHERE email = $1';
+        const values = [email];
+        try {
+            const resultQuery = await client.query(query, values);
+            res.status(200)
+            return res.send(resultQuery)
+        } catch (error) {
+            return res.status(500).send('Error');
+        }
+    }
+
 })
 
 //METODI GET
@@ -194,7 +216,7 @@ app.get("/about-us",(req,res)=>{
 app.get("/flights", (req, res) => {
     res.sendFile(`.${routesDir}/flights/flights.html`, {root: __dirname});
 });
-app.get("/booking", (req, res) => {
+app.get("/booking",requireAuth ,(req, res) => {
     res.sendFile(`.${routesDir}/booking/booking.html`, {root: __dirname});
 });
 app.get("/tracker", (req, res) => {

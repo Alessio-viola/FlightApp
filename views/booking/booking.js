@@ -178,6 +178,21 @@ function selectSeat(btn, context) {
     }
 }
 
+function randomChoiches(context) {
+    const requiredSeats = context.flight.adults + context.flight.children;
+    const availableSeats = document.getElementsByClassName('seat-unselected');
+    
+    while (vueContext.selectedSeats.length < requiredSeats) {
+        const randomIndex = Math.floor(Math.random() * availableSeats.length);
+        const seat = availableSeats[randomIndex];
+
+        seat.classList = 'seat-selected';
+        vueContext.selectedSeats.push(seat.textContent);
+    }
+    
+}
+
+
 function saveTicketOnDb(flight) {
     return new Promise((resolve, reject) => {
         $.ajax({

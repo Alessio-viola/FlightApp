@@ -50,7 +50,7 @@
         </div>
         <br>
         <div class="input-group d-flex justify-content-center">
-          <button id="custom-button" class="btn" type="button" style="background-color: var(--primary-color);color:white">Reset Chat</button>
+          <button id="reset-button" class="btn" type="button" style="background-color: var(--primary-color);color:white">Reset Chat</button>
         </div>
         
       </div>
@@ -59,10 +59,11 @@
 
   
   <script>
+  
     //CHAT PERMANENTE PER UTENTI REGISTRATI
     //if(document.cookie.logged != undefined){
       $(document).ready(function() {
-      $.ajax({
+        $.ajax({
         url: '/get-chat/', //TODO /get-chat in index.js questa chiamata ajax mi restituirà la lista di tutte le domande e le risposte che l'utente ha fatto, e mostrera la chat a schermo
         type: 'GET',
         success: function(response) {
@@ -77,13 +78,14 @@
           console.log("error")
         }
       });
+    
     });
   //}
 
     // Funzione per inviare una richiesta AJAX al server
     function sendMessage(message) {
       $.ajax({
-        url: "http://localhost:3000/message-processing",
+        url: "/message-processing",
         method: 'POST',
         data: { message: message },
         success: function(response) {
@@ -123,6 +125,23 @@
           sendMessage(message);
         }
       }
+    });
+
+    $('#reset-button').click(function() {
+      $.ajax({
+        url: "/delete-chat",
+        method: 'GET',
+        data: {},
+        success: function(response) {
+          // Aggiungi la risposta alla chat
+          $('#chat-container').empty();
+          $('#chat-container').append('<div class="chat-message"><div class="message">Ciao!</div></div>');
+          $('#chat-container').append('<div class="chat-message"><div class="message"></div>Chiedimi qualsiasi tipo di informazione su luoghi da visitare</div><br>');
+        },
+        error: function() {
+          alert('Errore nella richiesta AJAX');
+        }
+      });
     });
   </script>
 

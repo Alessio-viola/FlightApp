@@ -21,7 +21,7 @@
 
     <link rel="stylesheet" href="/views/tracker/tracker.css">
 </head>
-<body onload="loadBar();hideErrorMessage();">
+<body onload="loadBar();">
 <div id="navbar" class="mb-4"></div>
 
 <div id="globalContainer" :style="cssVars">
@@ -43,13 +43,18 @@
 
     <div class="d-flex flex-column align-items-center">
         <div class="arc" id="arc">
-            <!--            <div id="plane"><img src="/assets/icons/airplane-big.png" style="height: 80px; width: 80px;"/></div>-->
         </div>
     </div>
-    <div class="d-flex flex-row justify-content-between align-items-stretch text-cont">
-        <div>{{startCity}}</div>
-        <div>{{arrCity}}</div>
-    </div>
+    <div class="d-flex flex-row justify-content-between align-items-center text-cont">
+        <div class="text-center">{{ startCity }}</div>
+        <div class="text-center">{{ arrCity }}</div>
+      </div>
+      <div class="d-flex flex-row justify-content-between align-items-center text-cont">
+        <div class="text-center"><h4>{{ depTimeStamp }}</h4></div>
+        <div class="text-center"><h4>{{ arrTimeStamp }}</h4></div>
+      </div>
+      
+      
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
