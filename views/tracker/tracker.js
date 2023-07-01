@@ -24,20 +24,17 @@ $(document).ready(() => {
 async function retrieveFlightInfo() {
     vueContext.isLoading = true;
 
-    // let code = 'RYR1199' // DEBUG: test code
     let code = $('#flightCode').val();
-    //let airlineCode = code.slice(0, 3);
-    //let flightCode = code.slice(3);
-    //let url = new URL(`https://api.laminardata.aero/v1/airlines/${airlineCode}/flights/${flightCode}?`);
-    //url.searchParams.append('user_key', 'c33b9571ea8ca09bad4dc89d5c88635d');
+    
     
     //AVIATIONSTACK API
     const accessKey = "1aa26f3f41c3aa1f86d4554d94ab9063" 
     //let url = new URL(`http://api.aviationstack.com/v1/flights?access_key=${accessKey}&flight_icao=${code}`)
+    //let url = `/api/flight/${flightNumber}`
     let url = new URL('https://localhost:3000/example-tracker-aviationstack.json'); // DEBUG uncomment url above and comment this to get real data
 
     $.get({
-            url: url,
+            url:url, 
             success: function (res) {
                 console.log(res)
 
@@ -48,26 +45,6 @@ async function retrieveFlightInfo() {
                     parentElement.removeChild(childElement);
                 }
                 
-                /* //laminardata api response
-                if (res.features.length === 0) {
-                    // Show error
-                    vueContext.isLoading = false;
-                    vueContext.isError = true;
-                } else {
-                    // Get the trip times
-                    let obj = res.features[res.features.length - 1].properties
-                    let depTime = obj.departure.runwayTime.estimated;
-                    if (!depTime) depTime = obj.departure.runwayTime.actual
-                    if (!depTime) depTime = obj.departure.runwayTime.initial
-                    let arrTime = obj.arrival.runwayTime.estimated;
-                    if (!arrTime) arrTime = obj.arrival.runwayTime.actual
-                    if (!arrTime) arrTime = obj.arrival.runwayTime.initial
-                    if (!depTime || !arrTime) {
-                        vueContext.isLoading = false;
-                        vueContext.isError = true;
-                        return;
-                    }*/
-
                     //aviation stack api response
                     if (res.data.length === 0) {
                         // Show error

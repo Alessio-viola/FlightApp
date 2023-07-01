@@ -1,15 +1,25 @@
-const constants = require('./constants');
 const https = require('https');
 const url = require('url');
 
 const iataConverter = require('airlines-iata-codes');
 
-const ACCESS_TOKEN = 'nwx2IvkqGCyOFwjHPtfYxT29B5loxGtv';
+require("dotenv").config();
+
+//flight's attributes 
+const flightAttributes = {
+    departureAirportCode: 'dep',
+    arrivalAirportCode: 'arr',
+    numAdults: 'adults',
+    numChildren: 'children',
+    departureDate: 'depDate',
+    arrivalDate: 'arrDate',
+}
+
 
 function getAccessToken() {
     return new Promise((resolve, reject) => {
-        const API_KEY = 'nwx2IvkqGCyOFwjHPtfYxT29B5loxGtv';
-        const API_SECRET = 'mFiDTtq9pUICjjuX';
+        const API_KEY = process.env.AMADEUS_API_KEY;
+        const API_SECRET = process.env.AMADEUS_API_SECRET;
 
         const options = {
             hostname: 'test.api.amadeus.com',
@@ -40,12 +50,12 @@ function getAccessToken() {
 }
 
 async function sendAPIRequest(request) {
-    let departureAirportCode = request.query[constants.flightAttributes.departureAirportCode];
-    let arrivalAirportCode = request.query[constants.flightAttributes.arrivalAirportCode];
-    let numAdults = request.query[constants.flightAttributes.numAdults];
-    let numChildren = request.query[constants.flightAttributes.numChildren];
-    let departureDate = request.query[constants.flightAttributes.departureDate];
-    let arrivalDate = request.query[constants.flightAttributes.arrivalDate];
+    let departureAirportCode = request.query[flightAttributes.departureAirportCode];
+    let arrivalAirportCode = request.query[flightAttributes.arrivalAirportCode];
+    let numAdults = request.query[flightAttributes.numAdults];
+    let numChildren = request.query[flightAttributes.numChildren];
+    let departureDate = request.query[flightAttributes.departureDate];
+    let arrivalDate = request.query[flightAttributes.arrivalDate];
 
     const path = new URL('/v2/shopping/flight-offers', 'https://test.api.amadeus.com/');
     path.searchParams.append('originLocationCode', departureAirportCode);
@@ -97,10 +107,11 @@ function readFlightsFromFile() {
     });
 }
 
+//function that returns list of flights  taken from the API
 async function retrieveFlights(request) {
     const timeRegex = /(?<=T)[0-9]{2}:[0-9]{2}/g;
     const durationRegex = /([0-9]+H[0-9]+M)|([0-9]+H)|([0-9]+M)/g;
-    let isOneWay = request.query[constants.flightAttributes.arrivalDate] === 'none';
+    let isOneWay = request.query[flightAttributes.arrivalDate] === 'none';
 
     //let data = await sendAPIRequest(request);
     let data = await readFlightsFromFile(); // DEBUG: uncomment above and comment this to get real data
