@@ -106,17 +106,9 @@ https://fonts.google.com/specimen/Lato
 
 -aggiungere nelle user stories biglietti acquistati, tracker e cancellazione dati, logout, cambia passw, chat
 
-### AviationStack API per funzionalità tracker
+### AviationStack API e Amadeus API
+Nel contesto delle richieste alle API esterne, il server agisce come un proxy che inoltra le richieste del client all'API esterna, gestendo l'autenticazione, la protezione delle chiavi API, la manipolazione dei dati e altre operazioni necessarie. Il server funge da intermediario per controllare e gestire il flusso delle richieste e delle risposte tra il client e l'API esterna.
 
-Visto che il piano free dell'API non offre connessione https per le richieste e visto che noi utiliziamo https, dobbiamo disabilitare l'opzione mixed content del browser.
+L'utilizzo di un API proxy o gateway consente di aggiungere uno strato di sicurezza e personalizzazione tra il client e le API esterne, fornendo un controllo più granulare sulle richieste, la gestione delle autorizzazioni e la manipolazione dei dati.
 
-Su Firefox bisogna fare ciò: 
--Apri Firefox e digita "about:config" nella barra degli indirizzi.
--Cerca l'opzione security.mixed_content.block_display_content e security.mixed_content.block_active_content.
--Imposta entrambe le opzioni su false facendo doppio clic su di esse.
-
-Su Chrome invece:
--Apri Chrome e digita chrome://flags nella barra degli indirizzi.
--Cerca l'opzione "Insecure origins treated as secure" (Origini non sicure trattate come sicure).
--Abilita questa opzione facendo clic sul menu a discesa e selezionando "Enable" (Abilita).
--Riavvia Chrome per applicare le modifiche.
+L'obbiettivo è eliminare le richieste cross-origin dal punto di vista del browser. (in modo tale che non vengano applicate le restrizioni CORS imposte dal browser)

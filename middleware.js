@@ -1,4 +1,6 @@
 const rateLimit = require('express-rate-limit')
+const {isPrimeUser} = require("./models/User")
+
 
 //middleware to avoid bruteforce attack 
 const bruteforceLimiter = rateLimit({
@@ -9,7 +11,7 @@ const bruteforceLimiter = rateLimit({
 })
 
 //middleware to limit the number of accounts created
-//in realta mette un limite al numero di esecuzione della specifica route contando anche i casi di errori (come ad esmpio i vincoli di chiave non soddisfatti) 
+//in realta mette un limite al numero di esecuzione della specifica route contando anche i casi di errori (come ad esempio i vincoli di chiave non soddisfatti) 
 const createAccountLimiter = rateLimit({
 	windowMs: 60 * 60 * 1000, // 1 hour
 	max: 10, // Limit each IP to 10 create account requests per `window` (here, per hour)
@@ -30,8 +32,17 @@ const requireAuth = (req, res, next) => {
 
 //middleware to control if user is prime 
 const requirePrimeAuth = (req, res, next) => {
-    if (req.session.prime) {
-        next();
+
+    const email = req.user ? req.user.email : req.session.user
+    const table = req.user ? "googleUsers" : "Credenziali"
+    
+    if (req.session.prime && req.session.loggedin) {
+        //controllo aggiuntivo lato Database
+        if(isPrimeUser(email,table)){
+            next();
+        }else{
+            res.redirect('/');    
+        }
     } else {
         res.redirect('/');
     }

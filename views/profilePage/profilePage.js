@@ -274,3 +274,59 @@ $(document).ready(function() {
   });
 });
 
+//PRIME 
+
+let primeValue = localStorage.getItem("prime");
+console.log("primeValue", primeValue);
+
+$(document).ready(function() {
+  var primebutton = document.getElementById("prime-button");
+
+  $('#prime-button').click(function(event) {
+    event.preventDefault();
+    if (primeValue == "false") {
+      $.ajax({
+        url: '/prime-registration/',
+        type: 'GET',
+        success: function(data) {
+          if (data.status == "success") {
+            console.log("registrazione avvenuta");
+            localStorage.setItem("prime", true);
+            primeValue = localStorage.getItem("prime");
+            $("#prime-field").text("Sei diventato un utente prime").show();
+            primebutton.textContent = "Disabilita prime";
+          }
+        },
+        error: function(xhr, status, error) {
+          console.log("error");
+        }
+      });
+    } else if (primeValue == "true") {
+      $.ajax({
+        url: '/delete-prime-registration/',
+        type: 'GET',
+        success: function(data) {
+          if (data.status == "success") {
+            console.log("cancellazione ottenuta");
+            localStorage.setItem("prime", false);
+            primeValue = localStorage.getItem("prime");
+            $("#prime-field").text("Non sei piu un utente prime").show();
+            primebutton.textContent = "Abilita prime";
+          }
+        },
+        error: function(xhr, status, error) {
+          console.log("error");
+        }
+      });
+    }
+  });
+
+  // Gestione caso di utente non ancora Prime
+  if (primeValue == "false") {
+    primebutton.textContent = "Abilita prime";
+  } else if (primeValue == "true") {
+    primebutton.textContent = "Disabilita prime";
+  }
+});
+
+

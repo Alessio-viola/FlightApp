@@ -15,7 +15,6 @@
       <script type="text/javascript" src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
   
       <script type="text/javascript" src="views/common/bar.js"></script>
-      <script type="text/javascript" src="utils/constants.js"></script>
       <script type="text/javascript" src="views/chatgptPage/chatgptPage.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   
@@ -50,7 +49,7 @@
         </div>
         <br>
         <div class="input-group d-flex justify-content-center">
-          <button id="reset-button" class="btn" type="button" style="background-color: var(--primary-color);color:white">Reset Chat</button>
+          <button id="reset-button" class="btn" type="button" style="background-color: var(--primary-color);color:white;">Reset Chat</button>
         </div>
         
       </div>
@@ -59,9 +58,23 @@
 
   
   <script>
-  
+    
+    //per distinguere gli utenti loggati da quelli non loggati
+    let auth = localStorage.getItem("authenticated")
+
+    //nascondere il reset button in caso di utente non loggato
+    $(document).ready(function() {
+      var resetbutton = document.getElementById("reset-button");
+      
+      if(auth == "true"){
+        resetbutton.style.display = "block";
+      }else{
+        resetbutton.style.display = "none";
+      }
+    });
+
     //CHAT PERMANENTE PER UTENTI REGISTRATI
-    //if(document.cookie.logged != undefined){
+    if(auth){
       $(document).ready(function() {
         $.ajax({
         url: '/get-chat/', //TODO /get-chat in index.js questa chiamata ajax mi restituirà la lista di tutte le domande e le risposte che l'utente ha fatto, e mostrera la chat a schermo
@@ -77,10 +90,10 @@
         error: function(xhr, status, error) {
           console.log("error")
         }
-      });
+        });
     
-    });
-  //}
+      });
+    }
 
     // Funzione per inviare una richiesta AJAX al server
     function sendMessage(message) {
