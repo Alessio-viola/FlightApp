@@ -42,6 +42,8 @@ async function retrieveFlightInfo() {
                     vueContext.isLoading = false;
                     if(prime == "false"){
                         $("#error-message").text("Non sei un utente prime").show();
+                    }else if(prime == undefined){
+                        $("#error-message").text("Non sei autenticato").show();
                     }
                 }
 

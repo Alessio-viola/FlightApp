@@ -49,18 +49,19 @@ async function insertUser(id, nome, cognome, username, password) {
 
   try {
     const hash = await bcrypt.hash(password, saltRounds);
-    const query = 'INSERT INTO Credenziali (nome,cognome,email, pass, username) VALUES ($1, $2, $3, $4, $5)';
+    const query = 'INSERT INTO Credenziali (nome,cognome,email, pass, username) VALUES ($1, $2, $3, $4, $5) RETURNING *';
     const values = [nome, cognome, id, hash, username];
 
     const result = await client.query(query, values);
+    return result;
   } catch (err) {
     if (err.constraint === 'credenziali_pkey') {
       return  { code: 1001 };
     } else if (err.constraint === 'vincolo_username') {
       return  { code: 1002 };
     } else {
-      console.error('Errore durante l\'inserimento dell\'utente:', err);
-      throw err; // Rilancia l'errore per una gestione ulteriore
+      //console.error('Errore durante l\'inserimento dell\'utente:', err);
+      return err
     }
   }
 }

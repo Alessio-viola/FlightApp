@@ -112,3 +112,12 @@ Nel contesto delle richieste alle API esterne, il server agisce come un proxy ch
 L'utilizzo di un API proxy o gateway consente di aggiungere uno strato di sicurezza e personalizzazione tra il client e le API esterne, fornendo un controllo più granulare sulle richieste, la gestione delle autorizzazioni e la manipolazione dei dati.
 
 L'obbiettivo è eliminare le richieste cross-origin dal punto di vista del browser. (in modo tale che non vengano applicate le restrizioni CORS imposte dal browser)
+
+### Tests
+Per lanciare i tests:
+-se si utilizza una versione specifica di nodejs con nvm , i test si lanciano con il seguente comando: 
+  nvm exec <versione_node> mocha tests/signup.test.js  
+  nel mio caso: nvm exec stable mocha tests/signup.test.js 
+-se non si utilizza utilizza un Manager di versioni , allora il comando deve essere:
+  mocha tests/signup.js (Per utilizzare mocha tuttavia si deve avere almeno la versione 14.y.z di nodejs)
+  
