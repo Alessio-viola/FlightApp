@@ -28,6 +28,48 @@ function checkEmailInput(){
     })
 }
 
+function openPopup1() {
+    document.getElementById("forgotPasswordPopup").style.display = "block";
+}
+
+  function closePopup1() {
+    document.getElementById("forgotPasswordPopup").style.display = "none";
+}
+
+function openPopup2() {
+    document.getElementById("tokenPopup").style.display = "block";
+}
+
+  function closePopup2() {
+    document.getElementById("tokenPopup").style.display = "none";
+}
+
+function openPopup3() {
+    document.getElementById("passwordPopup").style.display = "block";
+}
+
+  function closePopup3() {
+    document.getElementById("passwordPopup").style.display = "none";
+}
+
+function successAlert(){
+    Swal.fire({
+      title: 'Controlla la tua email',
+      icon: 'success',
+      text: 'Abbiamo inviato un token alla tua email!',
+      confirmButtonText:'Ok'
+    })
+}
+
+function errorAlert(){
+    Swal.fire({
+      title: 'Non sei registrato con questa email',
+      icon: 'Warning',
+      confirmButtonText:'Ok'
+    })
+}
+    
+
 $(document).ready(function() {
     $('#signinForm').submit(function(event) {
       event.preventDefault();
@@ -53,6 +95,83 @@ $(document).ready(function() {
       });
     });
   });
+
+$(document).ready(function() {
+    $('#recoveryPasswordForm').submit(function(event) {
+        event.preventDefault();
+        const email = $('#recoveryEmail').val();
+        $.ajax({
+            url: '/forgot-password/',
+            type: 'POST',
+            data: {email: email},
+            success:function(data){
+                if(data.code == "Success"){
+                    closePopup1();
+                    openPopup2();
+                }
+                else{
+                    console.log("Errore nell'apertura del popup")
+                }
+            },
+            error: function(xhr, status, error) {
+                $("#error-message").text("Credenziali errate").show();      
+            }
+        });
+        });
+})
+
+$(document).ready(function() {
+    $('#tokenForm').submit(function(event) {
+        event.preventDefault();
+        const email = $('#recoveryEmail').val();
+        const token = $('#recoveryToken').val();
+        $.ajax({
+            url: '/check-token/',
+            type: 'POST',
+            data: {email:email, token:token},
+            success:function(data){
+                if(data.code == "Success"){
+                    console.log("Sto per chiudere il popup")
+                    closePopup2();
+                    openPopup3();
+                }
+                else{
+                    console.log("Errore nell'inserimento del token")
+                }
+            },
+            error: function(xhr, status, error) {
+
+                $("#error-message").text("Credenziali errate").show();      
+            }
+        });
+    });
+})
+
+$(document).ready(function() {
+    $('#passwordForm').submit(function(event) {
+        event.preventDefault();
+        const newPassword = $('#recoveryPassword').val();
+        const confNewPassword = $('#confirmRecoveryPassword').val();
+        const email = $('#recoveryEmail').val();
+        $.ajax({
+            url: '/update-password/',
+            type: 'POST',
+            data: {password: newPassword, confPassword: confNewPassword, email: email},
+            success: function(data){
+                if(data.code == 'Success'){
+                    closePopup3();
+                }
+                else{
+                    console.log("Errore nell'apertura del popup")
+                }
+            },
+            error: function(xhr, status, error) {
+                $("#error-message").text("Credenziali errate").show();      
+            }
+        })
+    })
+})
+
 
 function hideErrorMessage(){
     

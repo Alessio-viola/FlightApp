@@ -40,6 +40,15 @@ body, html {
       background-color:var(--secondary-color);
       border-radius: 5px;
     }
+    #forgot-password-button{
+      background-color:var(--secondary-color);
+      border-radius: 5px;
+    }
+    #inviaButton{
+      background-color:var(--secondary-color);
+      border-radius: 5px;
+      border-color: white;
+    }
   
     input[type="email"],
     input[type="password"],
@@ -104,4 +113,27 @@ body, html {
     }
   }
   
-  
+    /* CSS per il popup */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .popup h2 {
+      margin-top: 0;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
