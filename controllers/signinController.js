@@ -38,7 +38,19 @@ router.post("/api/sign-in",bruteforceLimiter ,async (req, res) => {
         const result = await bcrypt.compare(password, hashedPassword);
     
         if(result == true){
+            
             res.cookie("logged", true)
+            
+            //settaggio del prime cookie
+            try{
+                const info =  await userModel.isPrimeUser(email,"Credenziali")
+                const prime = info.prime
+                console.log(prime)
+                res.cookie("prime", prime)
+                
+            }catch(err){
+                console.log("error during setting prime cookie")
+            }
             req.session.loggedin = true;//vado a CREARE il campo loggedin all'interno di req.session e lo setto a true
             req.session.user = email; //vado a CREARE il campo user all'interno di req.session e lo setto uguale alla mail
             return res.send({code: "Success", username: informations.nome}).status(200)

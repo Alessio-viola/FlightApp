@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
     <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -43,7 +45,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/tracker">Tracker</a>
+                    <a id="trackNavbarButton" class="nav-link" href="/tracker">Tracker</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about-us">About</a>
@@ -91,5 +93,15 @@
         </div>
     </div>
 </nav>
+
+<div id="tracker-panel" class="panel" style="display: none;">
+    <h3>Benvenuto nel Tracker</h3>
+    <p>Questo è un esempio di contenuto nel pannello.</p>
+    <button>Un pulsante nel pannello</button>
+    <!-- Altri elementi o contenuti desiderati -->
+  </div>
+  
+  <script type="text/javascript" src="/views/common/bar.js"></script>
+
 </body>
 </html>

@@ -24,19 +24,26 @@ $(document).ready(() => {
 async function retrieveFlightInfo() {
     vueContext.isLoading = true;
 
-    let code = $('#flightCode').val();
+    let flightNumber = $('#flightCode').val();
     
     
     //AVIATIONSTACK API
-    const accessKey = "1aa26f3f41c3aa1f86d4554d94ab9063" 
+    //const accessKey = "1aa26f3f41c3aa1f86d4554d94ab9063" 
     //let url = new URL(`http://api.aviationstack.com/v1/flights?access_key=${accessKey}&flight_icao=${code}`)
-    //let url = `/api/flight/${flightNumber}`
-    let url = new URL('https://localhost:3000/example-tracker-aviationstack.json'); // DEBUG uncomment url above and comment this to get real data
+    let url = `/api/flight/${flightNumber}`
+    //let url = new URL('https://localhost:3000/example-tracker-aviationstack.json'); // DEBUG uncomment url above and comment this to get real data
 
     $.get({
             url:url, 
             success: function (res) {
-                console.log(res)
+                
+                if(res.data == undefined){//gestire caso di utente che non ha il prime 
+                    vueContext.isError = true;
+                    vueContext.isLoading = false;
+                    if(prime == "false"){
+                        $("#error-message").text("Non sei un utente prime").show();
+                    }
+                }
 
                 //elimino aereo precedente 
                 const parentElement = document.getElementById("arc")

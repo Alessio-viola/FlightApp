@@ -54,3 +54,13 @@
 .info-icon {
     height: 48px;
 }
+
+.invalid-credentials{
+    background-color: #ffe4e4;
+    border:1px solid #ff7f7f;
+    color: #f00;
+    display: none;/*non lo faccio apparire inizialmente*/
+    font-size:14px;
+    margin:10px 0;
+    padding: 10px;
+  }

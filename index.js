@@ -96,6 +96,7 @@ app.get('/logout', (req, res) => {
     res.clearCookie("logged")
     res.clearCookie("nameUser");
     res.clearCookie("photoUser");
+    res.clearCookie("prime")
 
     //to clear session 
     req.session.destroy(err => {
@@ -125,6 +126,9 @@ app.use('/', profileController);
 
 const bookingController = require('./controllers/bookingController');
 app.use('/', bookingController);
+
+const trackerController = require('./controllers/trackerController')
+app.use('/api',trackerController);
 
 
 //auth with google

@@ -24,6 +24,15 @@ if (logged) {
 //    document.getElementById("profileImage").src = photoGmail
 //  }
 
+//PRIME USER
+const prime = getCookieValue('prime');//prendo il nome
+console.log("prime cookie",prime)
+
+if (prime == "true") {
+    localStorage.setItem("prime", true)
+} else if(prime == "false"){
+    localStorage.setItem("prime", false)//l'utente ha effettuato l'accesso con google
+}
 
 /**
  * Inserts the navigation bar in the element of the page with ID 'navbar'.
@@ -63,6 +72,7 @@ function UnauthloginOrSignup(login, signup) {
 /**
  * Adapts the navigation bar to the user's authentication state
  */
+
 function adaptToAuthentication() {
     let authenticated = localStorage.getItem('authenticated') === 'true';
     if (authenticated) {
@@ -77,3 +87,29 @@ function logOut() {
     localStorage.setItem('authenticated', 'false');
     window.location.href = "/logout";
 }
+/*
+function trackerPanel(trackerBtn) {
+    var prime = localStorage.getItem("prime");
+    var panel = document.getElementById("tracker-panel");
+    console.log("panel",panel)
+    if (prime == "false") {
+      trackerBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+        
+        if (panel.style.display === "none") {
+          panel.style.display = "block"; // Mostra il pannello
+        } else {
+          panel.style.display = "none"; // Nascondi il pannello
+        }
+      });
+    }
+  }
+
+// Aggiungi l'evento DOMContentLoaded per chiamare la funzione dopo che la pagina è stata caricata
+document.addEventListener("DOMContentLoaded", function() {
+      // Chiamare la funzione trackerPanel() dopo che la pagina è stata caricata
+      const trackerBtn = document.getElementById("trackNavbarButton");
+    trackerPanel(trackerBtn);
+  });  
+
+*/

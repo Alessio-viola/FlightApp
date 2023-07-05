@@ -199,6 +199,33 @@ async function isPrimeUser(id, isUser){//isUser ci serve per capire se ha effett
   }
 }
 
+async function modifyUserToPrimeUser(id,userIs){
+  
+  const query = "UPDATE "+ userIs +" SET prime = $1 WHERE email = $2";
+  const values = [true,id]
+  
+  try {
+    const resultQuery = await client.query(query, values);
+    return resultQuery
+  } catch (error) {
+    console.error('Errore durante l\'esecuzione della query:', error);
+    throw error; // Rilancia l'errore per una gestione ulteriore
+  }
+}
+
+async function modifyPrimeUserToUser(id,userIs){
+  const query = "UPDATE "+ userIs +" SET prime = $1 WHERE email = $2";
+  const values = [false,id] //false, valore di prime da modificare
+  
+  try {
+    const resultQuery = await client.query(query, values);
+    return resultQuery
+  } catch (error) {
+    console.error('Errore durante l\'esecuzione della query:', error);
+    throw error; // Rilancia l'errore per una gestione ulteriore
+  }
+}
+
 module.exports = {
   getPersonalInfo,
   deleteUser,
@@ -212,4 +239,10 @@ module.exports = {
   insertGoogleUser,
   getHashedPassword,
   updatePassword,
+<<<<<<< HEAD
+=======
+  modifyUserToPrimeUser,
+  modifyPrimeUserToUser,
+  isPrimeUser
+>>>>>>> e71e6571def6d17c1b8c72301637460de534b0f7
 };

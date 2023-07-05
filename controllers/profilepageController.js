@@ -16,7 +16,7 @@ const bcrypt = require('bcrypt');// to hash passwords
 const ticketModel = require("./../models/Ticket") 
 const userModel = require("./../models/User")
 
-const {requireAuth} = require("./../middleware")
+const {requireAuth, requirePrimeAuth} = require("./../middleware")
 
 //endpoint che restituisce i biglietti prenotati dall'utente
 router.get("/biglietti-prenotati",requireAuth ,async (req, res) => {
@@ -58,7 +58,7 @@ router.get("/get-personal-info", requireAuth, async (req, res) => {
         })
 
     } else { //utente si è loggato tramite Google OAuth2
-        
+        console.log(req.user)
         return res.send({
             nome: req.user.nome,
             cognome: req.user.cognome,
@@ -167,6 +167,44 @@ router.post("/cancellazione-account", requireAuth, async (req, res) => {
         } catch (error) {
             res.status(500).send('Error');
         }
+    }
+})
+
+router.get("/prime-registration",requireAuth,async (req,res)=>{
+    
+    const email = req.user ? req.user.email : req.session.user
+    const userIs = req.user ? "googleUsers" : "Credenziali"
+
+    try{
+        const result = await userModel.modifyUserToPrimeUser(email,userIs);
+        if(result.rowCount > 0){//query avvenuta con successo 
+            res.cookie("prime", true)
+            req.session.prime = true;
+            res.send({status:"success"})
+        }else{
+            res.send({status:"failure"})
+        }
+    }catch(err){
+        console.log(err);
+    }
+})
+
+router.get("/delete-prime-registration",async (req,res)=>{
+    const email = req.user ? req.user.email : req.session.user
+    const userIs = req.user ? "googleUsers" : "Credenziali"
+
+    try{
+        const result = await userModel.modifyPrimeUserToUser(email,userIs);
+        if(result.rowCount > 0){//query avvenuta con successo
+            console.log("CIAO") 
+            res.clearCookie("prime")
+            res.cookie("prime",false)
+            res.send({status:"success"})
+        }else{
+            res.send({status:"failure"})
+        }
+    }catch(err){
+        console.log(err);
     }
 })
 
