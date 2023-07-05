@@ -197,6 +197,7 @@ router.get("/delete-prime-registration",async (req,res)=>{
         const result = await userModel.modifyPrimeUserToUser(email,userIs);
         if(result.rowCount > 0){//query avvenuta con successo
             console.log("CIAO") 
+            req.session.prime = false
             res.clearCookie("prime")
             res.cookie("prime",false)
             res.send({status:"success"})

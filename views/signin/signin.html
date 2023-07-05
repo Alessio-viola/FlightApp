@@ -66,33 +66,36 @@
       </form>
 
     
-        <form id="recoveryPasswordForm" action="http://localhost:3000/forgot-password" method="POST">
+        <form id="recoveryPasswordForm" action="https://localhost:3000/forgot-password" method="POST">
           <div id="forgotPasswordPopup" class="popup">
             <h2>Password dimenticata</h2>
             <p>Inserisci il tuo indirizzo email per reimpostare la password.</p>
             <input type="email" id="recoveryEmail" required>
+            <p class="invalid-credentials" id="error1"></p>
             <input type="submit" id="inviaButton" value="Invia" onclick="">
             <span class="popup-close" onclick="closePopup1();">&times;</span>
           </div>  
         </form>
 
-      <form id="tokenForm" action="http://localhost:3000/token" method="POST">
+      <form id="tokenForm" action="https://localhost:3000/token" method="POST">
         <div id="tokenPopup" class="popup">
           <h2>Inserisci il Token</h2>
           <p>Inserisci il Token ricevuto via email.</p>
           <input type="text" id="recoveryToken" required>
+          <p class="invalid-credentials" id="error2"></p>
           <input type="submit" id="inviaButton" value="Invia" onclick="">
           <span class="popup-close" onclick="closePopup2()">&times;</span>
         </div>  
       </form>
 
-      <form id="passwordForm" action="http://localhost:3000/password" method="POST">
+      <form id="passwordForm" action="https://localhost:3000/password" method="POST">
         <div id="passwordPopup" class="popup">
           <h2>Inserisci La nuova password</h2><br>
           <h5>Inserisci nuova password</h5>
           <input type="text" id="recoveryPassword" required><br>
           <h5>Conferma nuova password</h5>
           <input type="text" id="confirmRecoveryPassword" required>
+          <p class="invalid-credentials" id="error3"></p>
           <input type="submit" id="inviaButton" value="Invia" onclick="">
           <span class="popup-close" onclick="closePopup3()">&times;</span>
         </div>  

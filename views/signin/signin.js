@@ -30,43 +30,35 @@ function checkEmailInput(){
 
 function openPopup1() {
     document.getElementById("forgotPasswordPopup").style.display = "block";
+    document.getElementById("signinForm").style.filter = 'blur(4px)';
+    document.getElementById("error1").style.display = "none"
 }
 
   function closePopup1() {
     document.getElementById("forgotPasswordPopup").style.display = "none";
+    document.getElementById("signinForm").style.filter = 'none';
 }
 
 function openPopup2() {
     document.getElementById("tokenPopup").style.display = "block";
+    document.getElementById("signinForm").style.filter = 'blur(4px)';
+    document.getElementById("error2").style.display = "none"
 }
 
   function closePopup2() {
     document.getElementById("tokenPopup").style.display = "none";
+    document.getElementById("signinForm").style.filter = 'none';
 }
 
 function openPopup3() {
     document.getElementById("passwordPopup").style.display = "block";
+    document.getElementById("signinForm").style.filter = 'blur(4px)';
+    document.getElementById("error3").style.display = "none"
 }
 
   function closePopup3() {
     document.getElementById("passwordPopup").style.display = "none";
-}
-
-function successAlert(){
-    Swal.fire({
-      title: 'Controlla la tua email',
-      icon: 'success',
-      text: 'Abbiamo inviato un token alla tua email!',
-      confirmButtonText:'Ok'
-    })
-}
-
-function errorAlert(){
-    Swal.fire({
-      title: 'Non sei registrato con questa email',
-      icon: 'Warning',
-      confirmButtonText:'Ok'
-    })
+    document.getElementById("signinForm").style.filter = 'none';
 }
     
 
@@ -96,6 +88,7 @@ $(document).ready(function() {
     });
   });
 
+
 $(document).ready(function() {
     $('#recoveryPasswordForm').submit(function(event) {
         event.preventDefault();
@@ -110,11 +103,11 @@ $(document).ready(function() {
                     openPopup2();
                 }
                 else{
-                    console.log("Errore nell'apertura del popup")
+                    $("#error1").text("Email scorretta").show(); 
                 }
             },
             error: function(xhr, status, error) {
-                $("#error-message").text("Credenziali errate").show();      
+                      
             }
         });
         });
@@ -136,12 +129,11 @@ $(document).ready(function() {
                     openPopup3();
                 }
                 else{
-                    console.log("Errore nell'inserimento del token")
+                    $("#error2").text("Errore nell'inserimento del token").show();
                 }
             },
             error: function(xhr, status, error) {
-
-                $("#error-message").text("Credenziali errate").show();      
+      
             }
         });
     });
@@ -162,11 +154,11 @@ $(document).ready(function() {
                     closePopup3();
                 }
                 else{
-                    console.log("Errore nell'apertura del popup")
+                    $("#error3").text("Credenziali immesse errate").show();
                 }
             },
             error: function(xhr, status, error) {
-                $("#error-message").text("Credenziali errate").show();      
+                     
             }
         })
     })

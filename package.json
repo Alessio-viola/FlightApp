@@ -27,11 +27,12 @@
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "node-fetch": "^2.6.12",
->>>>>>> e71e6571def6d17c1b8c72301637460de534b0f7
+    "nodemailer": "^6.9.3",
     "openai": "^3.2.1",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
-    "pg": "^8.11.0"
+    "pg": "^8.11.0",
+    "puppeteer": "^5.5.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

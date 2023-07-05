@@ -75,6 +75,7 @@ router.post("/check-token", async (req,res) =>{
 
         if(informations.code != token){
             console.log("Il token che hai inserito non corrisponde");
+            return res.send({code: 'Error'})
         }else{
             console.log("Sono in success del checktoken")
             res.send({code: 'Success'});

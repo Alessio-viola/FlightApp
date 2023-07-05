@@ -240,10 +240,7 @@ module.exports = {
   insertGoogleUser,
   getHashedPassword,
   updatePassword,
-<<<<<<< HEAD
-=======
   modifyUserToPrimeUser,
   modifyPrimeUserToUser,
   isPrimeUser
->>>>>>> e71e6571def6d17c1b8c72301637460de534b0f7
 };
