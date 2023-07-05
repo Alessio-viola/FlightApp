@@ -2,6 +2,16 @@ const { Client } = require('pg');
 const constants = require('./../configuration');
 const bcrypt = require('bcrypt'); //to hash password
 
+const nodemailer = require('nodemailer');
+let transport = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  auth: {
+    user: 'info.flightapp@gmail.com',
+    pass: 'nugamhnefmfhrngh'
+  }
+});
+
 const connectionString = constants.connectionString;
 const client = new Client({
   connectionString: connectionString
@@ -17,6 +27,19 @@ async function getPersonalInfo(id) {
   } catch (error) {
     console.error('Errore durante l\'esecuzione della query:', error);
     throw error; // Rilancia l'errore per una gestione ulteriore
+  }
+}
+
+async function getToken(email){
+  const query = 'SELECT code from inviotoken WHERE email = $1';
+  const values= [email];
+
+  try{
+    const resultQuery = await client.query(query,values);
+    return resultQuery.rows[0];
+  }catch(error){
+    console.error('Errore durante l\'esecuzione della query:',error);
+    throw error;
   }
 }
 
@@ -62,6 +85,58 @@ async function insertUser(id, nome, cognome, username, password) {
       console.error('Errore durante l\'inserimento dell\'utente:', err);
       throw err; // Rilancia l'errore per una gestione ulteriore
     }
+  }
+}
+
+async function sendEmail(email){
+  const message = {
+    from: 'info.flightapp@gmail.com',
+    to: email,
+    subject: 'PROVA EMAIL',
+    html: 'Ti sei registrato!',
+  }
+  transport.sendMail(message);
+}
+
+function generateRandomToken(){
+  var token = ""
+  for (i=0; i<8; i++){
+    token = token + (Math.floor(Math.random() * 10)).toString();
+  }
+  return token;
+}
+
+async function sendTokenEmail(email,token){
+
+  const message = {
+    from: 'info.flightapp@gmail.com',
+    to: email,
+    subject: 'PROVA EMAIL',
+    html: 'Il token di recupero è ' + token + ' !',
+  }
+  transport.sendMail(message);
+
+
+}
+
+async function insertToken(email, token){
+
+  const query = "UPDATE inviotoken set code = $1 WHERE email=$2"
+  const values = [token,email];
+
+  try{
+    const result = await client.query(query,values);
+    if(result.rows[0] === undefined){
+      const queryInsert = "INSERT INTO inviotoken (email,code) VALUES ($1,$2)"
+      const valuesInsert = [email,token];
+
+      await client.query(queryInsert,valuesInsert);
+      console.log("Valore inserito per la prima volta corretto")
+    }else{
+      console.log("Valore sostituito correttamente");
+    }
+  }catch(err){
+    
   }
 }
 
@@ -128,8 +203,13 @@ module.exports = {
   getPersonalInfo,
   deleteUser,
   deleteGoogleUser,
+  sendEmail,
+  sendTokenEmail,
+  generateRandomToken,
+  getToken,
+  insertToken,
   insertUser,
   insertGoogleUser,
   getHashedPassword,
-  updatePassword
+  updatePassword,
 };
