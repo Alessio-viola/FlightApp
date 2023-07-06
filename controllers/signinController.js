@@ -16,12 +16,12 @@ const bcrypt = require('bcrypt');//to hash passwords
 const userModel = require("./../models/User")
 
 //import dei middleware
-const {bruteforceLimiter} = require("./../middleware")
+const {bruteforceLimiter, errorBruteforceLimiter} = require("./../middleware")
 
 //CODICI DI ERRORE /api/sign-in
 // "Error" -> errore
 // "Success" --> login andato a buon fine 
-router.post("/api/sign-in",bruteforceLimiter ,async (req, res) => {
+router.post("/api/sign-in", bruteforceLimiter , errorBruteforceLimiter, async (req, res) => {
 
     const {email, password} = req.body
     try{

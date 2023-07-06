@@ -113,8 +113,8 @@ async function retrieveFlights(request) {
     const durationRegex = /([0-9]+H[0-9]+M)|([0-9]+H)|([0-9]+M)/g;
     let isOneWay = request.query[flightAttributes.arrivalDate] === 'none';
 
-    //let data = await sendAPIRequest(request);
-    let data = await readFlightsFromFile(); // DEBUG: uncomment above and comment this to get real data
+    let data = await sendAPIRequest(request);
+    //let data = await readFlightsFromFile(); // DEBUG: uncomment above and comment this to get real data
     let flights = data.data;
     let result = []
 

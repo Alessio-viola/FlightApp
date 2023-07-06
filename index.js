@@ -90,7 +90,7 @@ app.get("/dashboard", (req, res) => {
 
 
 // Gestione del logout
-app.get('/logout', (req, res) => {
+app.get('/logout' ,(req, res) => {
 
     //to reset the right navbar when the client logged with google and press logout
     res.clearCookie("logged")
@@ -130,6 +130,7 @@ app.use('/', bookingController);
 const trackerController = require('./controllers/trackerController')
 app.use('/api',trackerController);
 
+const userModel = require("./models/User")
 
 //auth with google
 app.get("/auth/google", passport.authenticate("google", {
@@ -138,17 +139,30 @@ app.get("/auth/google", passport.authenticate("google", {
 
 //callback route for google to redirect to 
 //we have to puts passport middleware also hero to exchange code in the url for profile information
-app.get("/auth/google/redirect", passport.authenticate("google"), (req, res) => {
+app.get("/auth/google/redirect", passport.authenticate("google"), async (req, res) => {
+    
+    req.session.loggedin = true;
 
-    req.session.loggedin = true;//settato per accesso alle pagine protette
+    let prime; // Dichiarazione di "prime" al di fuori del blocco try
+    try {
+        const info = await userModel.isPrimeUser(req.user.emails[0].value, "googleUsers");
+        console.log(info);
+        prime = info.prime;
+        console.log(prime);
+        req.session.prime = prime;
+    } catch (err) {
+        console.log("Error during setting prime cookie");
+        console.log(err)
+        // Gestisci l'errore in qualche modo appropriato
+    }
 
-    //res.send(req.user)// ci sarà l'id restituitoci da google
-    res.cookie("logged", true)
-    res.cookie("nameUser", req.user.name.givenName)//utilizzo dei cookie per inviare informazioni dal server al client
-    res.cookie("photoUser", req.user.photos[0].value)
+    res.cookie("logged", true);
+    res.cookie("nameUser", req.user.name.givenName);
+    res.cookie("photoUser", req.user.photos[0].value);
+    res.cookie("prime", prime);
+    res.redirect("/");
+});
 
-    res.redirect("/")
-})
 
 /*
 app.listen(3000,()=>{

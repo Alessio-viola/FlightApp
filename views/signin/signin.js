@@ -72,12 +72,17 @@ $(document).ready(function() {
         type: 'POST',
         data: {email: email, password: password},
         success: function(data) {
+            console.log(data)
             if(data.code == "Success"){
                 localStorage.setItem("email", email)
                 localStorage.setItem('authenticated', 'true');
                 localStorage.setItem('nameUser', data.username);
                 window.location.href = "/";
-            }else{
+            }
+            else if(data.code == "too many requests"){
+                $("#error-message").text("too many requests").show();
+            }
+            else{
                 $("#error-message").text("Credenziali errate").show();
             }
         },

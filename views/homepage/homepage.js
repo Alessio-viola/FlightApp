@@ -32,6 +32,16 @@ async function loadAirportsList() {
     datalist.innerHTML = listStr;
 }
 
+//flight's attributes 
+const flightAttributes = {
+    departureAirportCode: 'dep',
+    arrivalAirportCode: 'arr',
+    numAdults: 'adults',
+    numChildren: 'children',
+    departureDate: 'depDate',
+    arrivalDate: 'arrDate',
+}
+
 function initForm() {
     let booker = document.getElementById("bookerForm");
 
@@ -79,28 +89,3 @@ function selectRandomDestination() {
 
     $('#arrivalField').val(randDestination);
 }
-
-
-function trackerPanel(trackerBtn) {
-    var prime = localStorage.getItem("prime");
-    var panel = document.getElementById("tracker-panel");
-    console.log("panel",panel)
-    if (prime == "false") {
-      trackerBtn.addEventListener('click', function(event) {
-        event.preventDefault();
-        
-        if (panel.style.display === "none") {
-          panel.style.display = "block"; // Mostra il pannello
-        } else {
-          panel.style.display = "none"; // Nascondi il pannello
-        }
-      });
-    }
-  }
-
-// Aggiungi l'evento DOMContentLoaded per chiamare la funzione dopo che la pagina è stata caricata
-document.addEventListener("DOMContentLoaded", function() {
-      // Chiamare la funzione trackerPanel() dopo che la pagina è stata caricata
-      const trackerBtn = document.getElementById("trackNavbarButton");
-    trackerPanel(trackerBtn);
-  });
