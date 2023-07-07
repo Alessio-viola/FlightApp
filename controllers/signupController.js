@@ -32,6 +32,7 @@ router.post("/api/sign-up",createAccountLimiter ,async (req, res) => {
 
     //controllo correttezza password
     if (password != conferma_password) {
+        console.log("pass != confpass")
         return res.send({code: 1003})
     }
 
@@ -39,16 +40,20 @@ router.post("/api/sign-up",createAccountLimiter ,async (req, res) => {
     const regex = /^[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}$/;
     
     if (!regex.test(email)) {
+        console.log("email scorretta")
         return res.send({code: 1000})
     }
 
     const result = await userModel.insertUser(email,nome,cognome,username,password)
     
-    if(result?.code === 1001){
+    if(result?.code === 1001 || result?.code === 1002){
+        console.log("1001 || 1002")
         return res.send(result)
     }
-
+    console.log("tutto apposto lato server")
+    
     //userModel.sendEmail(email) //da controllare la forma
+    
     return res.send(result)
 
 });
