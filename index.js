@@ -23,6 +23,7 @@ const routesDir = '/views';
 
 // middleware utilizzato per prendere i dati da form
 app.use(express.urlencoded({extended: false}))
+app.use(express.json());
 
 //import dei middleware 
 const {requireAuth} = require("./middleware")
@@ -176,3 +177,5 @@ server.listen(3000, () => {
   console.log('Server HTTPS avviato sulla porta 3000');
 });
   
+
+module.exports = app;

@@ -28,6 +28,8 @@ router.post("/api/sign-up",createAccountLimiter ,async (req, res) => {
 
     const {nome, cognome, username, email, password, conferma_password} = req.body
 
+    console.log(req.body)
+
     //controllo correttezza password
     if (password != conferma_password) {
         return res.send({code: 1003})
@@ -43,11 +45,10 @@ router.post("/api/sign-up",createAccountLimiter ,async (req, res) => {
     const result = await userModel.insertUser(email,nome,cognome,username,password)
     
     if(result?.code === 1001){
-        console.log('ciao')
         return res.send(result)
     }
 
-    userModel.sendEmail(email) //da controllare la forma
+    //userModel.sendEmail(email) //da controllare la forma
     return res.send(result)
 
 });
