@@ -35,6 +35,10 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
   //  await browser.close();
   //});
 
+  afterEach(async function (){
+    await page.waitForTimeout(1000);
+  })
+
   after(function() {
     client.end();
     process.exit();
@@ -49,7 +53,7 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     await page.type('#nome', 'Leo');
     await page.type('#cognome', 'Ponzo');
     await page.type('#email', 'leo@example.com');
-    await page.type('#username', 'LeoPonzo11');
+    await page.type('#username', 'LeoPonzo1');
     await page.type('#password', 'password123');
     await page.type('#conferma_password', 'password123');
 
@@ -77,7 +81,7 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     await page.type('#nome', 'Leo');
     await page.type('#cognome', 'Ponzo');
     await page.type('#email', 'leo@example.com');
-    await page.type('#username', 'LeoPonzo211');
+    await page.type('#username', 'LeoPonzo2');
     await page.type('#password', 'password123');
     await page.type('#conferma_password', 'password123');
 
@@ -99,6 +103,72 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     });
     
     expect(errorMessage).to.equal("Email già presente nel DB")
+  });
+
+  it('should fail registration if username already exists in DB', async function() {
+    await page.goto('https://localhost:3000/api/sign-up');
+
+    // Aspetta che l'elemento con l'id '#submitAuth' diventi visibile
+    await page.waitForSelector('#submitAuth', { visible: true });
+
+    await page.type('#nome', 'Leo');
+    await page.type('#cognome', 'Ponzo');
+    await page.type('#email', 'leoponzo@example.com');
+    await page.type('#username', 'LeoPonzo1');
+    await page.type('#password', 'password123');
+    await page.type('#conferma_password', 'password123');
+
+    // Fai clic sull'elemento solo dopo che è diventato visibile
+    await page.click('#submitAuth');
+
+    // Aspetta che l'elemento '#error-message' diventi visibile
+    await page.waitForSelector('#error-message', { visible: true });
+
+    // Aspetta che la navigazione si completi
+    //await Promise.all([
+    //  page.waitForNavigation({ waitUntil: 'networkidle0' }),
+    //]);
+    
+    // Verifica il risultato atteso
+    const errorMessage = await page.evaluate(() => {
+      const errorMessageElement = document.querySelector('#error-message');
+      return errorMessageElement.textContent;
+    });
+    
+    expect(errorMessage).to.equal("Username già esistente")
+  });
+
+  it('should fail registration if password != conferma_password', async function() {
+    await page.goto('https://localhost:3000/api/sign-up');
+
+    // Aspetta che l'elemento con l'id '#submitAuth' diventi visibile
+    await page.waitForSelector('#submitAuth', { visible: true });
+
+    await page.type('#nome', 'Leo');
+    await page.type('#cognome', 'Ponzo');
+    await page.type('#email', 'leoponzo2@example.com');
+    await page.type('#username', 'LeoPonzo2');
+    await page.type('#password', 'password12');
+    await page.type('#conferma_password', 'password123');
+
+    // Fai clic sull'elemento solo dopo che è diventato visibile
+    await page.click('#submitAuth');
+
+    // Aspetta che l'elemento '#error-message' diventi visibile
+    await page.waitForSelector('#error-message', { visible: true });
+
+    // Aspetta che la navigazione si completi
+    //await Promise.all([
+    //  page.waitForNavigation({ waitUntil: 'networkidle0' }),
+    //]);
+    
+    // Verifica il risultato atteso prendendo la tringa contenuta nel campo di errore mostrato all'utente 
+    const errorMessage = await page.evaluate(() => {
+      const errorMessageElement = document.querySelector('#error-message');
+      return errorMessageElement.textContent;
+    });
+    
+    expect(errorMessage).to.equal("password e conferma_password diverse")
   });
 
 });

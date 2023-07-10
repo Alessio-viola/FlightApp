@@ -2,13 +2,15 @@ const { Client } = require('pg');
 const constants = require('./../configuration');
 const bcrypt = require('bcrypt'); //to hash password
 
+require("dotenv").config();
+
 const nodemailer = require('nodemailer');
 let transport = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
   auth: {
-    user: 'info.flightapp@gmail.com',
-    pass: 'nugamhnefmfhrngh'
+    user: process.env.INDIRIZZO_EMAIL,
+    pass: process.env.PASSWORD_EMAIL
   }
 });
 
@@ -96,7 +98,7 @@ async function sendEmail(email){
     subject: 'PROVA EMAIL',
     html: 'Ti sei registrato!',
   }
-  transport.sendMail(message);
+  return transport.sendMail(message);
 }
 
 function generateRandomToken(){
@@ -127,7 +129,7 @@ async function insertToken(email, token){
 
   try{
     const result = await client.query(query,values);
-    if(result.rows[0] === undefined){
+    if(result.rowCount == 0){
       const queryInsert = "INSERT INTO inviotoken (email,code) VALUES ($1,$2)"
       const valuesInsert = [email,token];
 

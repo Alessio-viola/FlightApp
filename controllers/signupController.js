@@ -24,7 +24,7 @@ const {createAccountLimiter} = require("./../middleware")
 1003: password e conferma_password sono diverse
 */
 
-router.post("/api/sign-up",createAccountLimiter ,async (req, res) => {
+router.post("/api/sign-up" ,async (req, res) => {
 
     const {nome, cognome, username, email, password, conferma_password} = req.body
 
@@ -47,12 +47,10 @@ router.post("/api/sign-up",createAccountLimiter ,async (req, res) => {
     const result = await userModel.insertUser(email,nome,cognome,username,password)
     
     if(result?.code === 1001 || result?.code === 1002){
-        console.log("1001 || 1002")
         return res.send(result)
     }
-    console.log("tutto apposto lato server")
-    
-    //userModel.sendEmail(email) //da controllare la forma
+    console.log("Sto per inviare la mail ")
+    userModel.sendEmail(email) //da controllare la forma
     
     return res.send(result)
 

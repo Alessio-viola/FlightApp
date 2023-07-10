@@ -66,7 +66,6 @@ router.post("/api/sign-in", bruteforceLimiter , errorBruteforceLimiter, async (r
 
 router.post("/check-token", async (req,res) =>{
     const {email,token} = req.body
-    console.log("sono in checkToken")
 
     try{
         const informations = await userModel.getToken(email)
@@ -77,7 +76,6 @@ router.post("/check-token", async (req,res) =>{
             console.log("Il token che hai inserito non corrisponde");
             return res.send({code: 'Error'})
         }else{
-            console.log("Sono in success del checktoken")
             res.send({code: 'Success'});
         }
     }catch{
@@ -89,7 +87,6 @@ router.post("/update-password", async (req,res) =>{
     const {password, confPassword, email} = req.body
     const saltRounds = 10;
     try{
-        console.log("sono in update password");
         if(password != confPassword) return res.send({code: 'Error'})
 
         const crypted_password = await bcrypt.hash(password,saltRounds);
@@ -106,7 +103,6 @@ router.post("/forgot-password", async (req, res) => {
 
     const {email} = req.body
 
-
     try{
         
         const informations  = await userModel.getPersonalInfo(email)
@@ -120,10 +116,8 @@ router.post("/forgot-password", async (req, res) => {
         userModel.sendTokenEmail(email,token);
         userModel.insertToken(email,token);
 
-        console.log("Invio il primo success nel forgot")
         return res.send({code: 'Success'});
     }catch(err){
-        console.log("Error during recovering password")
         throw err
     }
 
