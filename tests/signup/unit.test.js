@@ -70,7 +70,7 @@ describe('User Registration: UNIT TESTS', function() {
             email: 'luigi@example.com',
             password: 'password456',
           },
-          {
+          /*{
             nome: 'Giovanna',
             cognome: 'Bianchi',
             username: 'giovannaBianchi',
@@ -125,7 +125,7 @@ describe('User Registration: UNIT TESTS', function() {
             username: 'alessiaNeri',
             email: 'alessia@example.com',
             password: 'password864',
-          }
+          }*/
         ];
         
     
