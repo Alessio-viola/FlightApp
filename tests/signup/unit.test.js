@@ -61,6 +61,98 @@ describe('User Registration: UNIT TESTS', function() {
         }
     });
     
+    it('should register multiple users with hashed password', async function() {
+      const usersData = [
+          {
+            nome: 'Mario',
+            cognome: 'Rossi',
+            username: 'marioRossi',
+            email: 'mario@example.com',
+            password: 'password123',
+          },
+          {
+            nome: 'Luigi',
+            cognome: 'Verdi',
+            username: 'luigiVerdi',
+            email: 'luigi@example.com',
+            password: 'password456',
+          },
+          {
+            nome: 'Giovanna',
+            cognome: 'Bianchi',
+            username: 'giovannaBianchi',
+            email: 'giovanna@example.com',
+            password: 'password789',
+          },
+          {
+            nome: 'Sara',
+            cognome: 'Neri',
+            username: 'saraNeri',
+            email: 'sara@example.com',
+            password: 'password987',
+          },
+          {
+            nome: 'Andrea',
+            cognome: 'Russo',
+            username: 'andreaRusso',
+            email: 'andrea@example.com',
+            password: 'password654',
+          },
+          {
+            nome: 'Giulia',
+            cognome: 'Gialli',
+            username: 'giuliaGialli',
+            email: 'giulia@example.com',
+            password: 'password321',
+          },
+          {
+            nome: 'Paolo',
+            cognome: 'Verde',
+            username: 'paoloVerde',
+            email: 'paolo@example.com',
+            password: 'password135',
+          },
+          {
+            nome: 'Laura',
+            cognome: 'Bianchi',
+            username: 'lauraBianchi',
+            email: 'laura@example.com',
+            password: 'password246',
+          },
+          {
+            nome: 'Simone',
+            cognome: 'Rossi',
+            username: 'simoneRossi',
+            email: 'simone@example.com',
+            password: 'password579',
+          },
+          {
+            nome: 'Alessia',
+            cognome: 'Neri',
+            username: 'alessiaNeri',
+            email: 'alessia@example.com',
+            password: 'password864',
+          }
+        ];
+        
+    
+      for (const userData of usersData) {
+       
+        try{
+          const result = await userModel.insertUser(userData.email, userData.nome, userData.cognome, userData.username, userData.password)
+          assert.strictEqual(result.rowCount, 1);
+          assert.strictEqual(result.rows[0].nome, userData.nome);
+          assert.strictEqual(result.rows[0].cognome, userData.cognome);
+          assert.strictEqual(result.rows[0].username, userData.username);
+          assert.strictEqual(result.rows[0].email, userData.email);
+    
+          const isPasswordMatch = await bcrypt.compare(userData.password, result.rows[0].pass);
+          assert.strictEqual(isPasswordMatch, true);
+        }catch(err){
+          console.log(err)
+        }
+      }
+    });
   
     it('should fail registration if username field is missing', async function() {
       // Simula la richiesta di registrazione con dati incompleti
