@@ -12,6 +12,8 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
   let browser;
   let page;
 
+  this.timeout(10000); // Imposta il timeout a 10 secondi
+
   before(async function() {
     const connectionString = constants.connectionString;
     client = new Client({
@@ -50,10 +52,10 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     // Aspetta che l'elemento con l'id '#submitAuth' diventi visibile
     await page.waitForSelector('#submitAuth', { visible: true });
 
-    await page.type('#nome', 'Leo');
-    await page.type('#cognome', 'Ponzo');
-    await page.type('#email', 'leo@example.com');
-    await page.type('#username', 'LeoPonzo1');
+    await page.type('#nome', 'Alessio');
+    await page.type('#cognome', 'Viola');
+    await page.type('#email', 'alessioviola04112001@gmail.com');
+    await page.type('#username', 'AleViola01');
     await page.type('#password', 'password123');
     await page.type('#conferma_password', 'password123');
 
@@ -78,10 +80,10 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     // Aspetta che l'elemento con l'id '#submitAuth' diventi visibile
     await page.waitForSelector('#submitAuth', { visible: true });
 
-    await page.type('#nome', 'Leo');
-    await page.type('#cognome', 'Ponzo');
-    await page.type('#email', 'leo@example.com');
-    await page.type('#username', 'LeoPonzo2');
+    await page.type('#nome', 'Alessio');
+    await page.type('#cognome', 'Viola');
+    await page.type('#email', 'alessioviola04112001@gmail.com');
+    await page.type('#username', 'AleViola02');
     await page.type('#password', 'password123');
     await page.type('#conferma_password', 'password123');
 
@@ -111,10 +113,10 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     // Aspetta che l'elemento con l'id '#submitAuth' diventi visibile
     await page.waitForSelector('#submitAuth', { visible: true });
 
-    await page.type('#nome', 'Leo');
-    await page.type('#cognome', 'Ponzo');
-    await page.type('#email', 'leoponzo@example.com');
-    await page.type('#username', 'LeoPonzo1');
+    await page.type('#nome', 'Alessio');
+    await page.type('#cognome', 'Viola');
+    await page.type('#email', 'alessioviola04112001@libero.it');
+    await page.type('#username', 'AleViola01');
     await page.type('#password', 'password123');
     await page.type('#conferma_password', 'password123');
 
@@ -144,11 +146,11 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     // Aspetta che l'elemento con l'id '#submitAuth' diventi visibile
     await page.waitForSelector('#submitAuth', { visible: true });
 
-    await page.type('#nome', 'Leo');
-    await page.type('#cognome', 'Ponzo');
-    await page.type('#email', 'leoponzo2@example.com');
-    await page.type('#username', 'LeoPonzo2');
-    await page.type('#password', 'password12');
+    await page.type('#nome', 'Alessio');
+    await page.type('#cognome', 'Viola');
+    await page.type('#email', 'alessioviola04112001@libero.it');
+    await page.type('#username', 'AleViola');
+    await page.type('#password', 'password');
     await page.type('#conferma_password', 'password123');
 
     // Fai clic sull'elemento solo dopo che è diventato visibile
@@ -172,41 +174,3 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
   });
 
 });
-
-/*
-  //login 
-
-  it('should login a new user checking cookies', async function() {
-    
-    // Simula l'interazione dell'utente con l'applicazione
-    await page.goto('https://localhost:3000/api/sign-in');
-    await page.type('#email', 'leo@example.com');
-    await page.type('#password', 'password123');
-    await page.click('#submit');
-
-    // Verifica il risultato atteso
-    
-
-    const cookies = await page.cookies();    
-
-    //await Promise.all([
-    //  page.waitForNavigation({ waitUntil: 'networkidle0' }),
-    //]);
-    
-    // Cattura dello screenshot della pagina
-    await page.screenshot({ path: './tests/signup/screensignin.png' });
-
-    const primeValue = cookies[0].value
-    const loggedValue = cookies[1].value
-    
-    console.log("prime: ",primeValue)
-    console.log("logged: ",loggedValue)
-
-    
-    expect(primeValue).to.equal(false);
-    expect(loggedValue).to.equal(true)
-
-    await browser.close();
-  });
-
-});*/

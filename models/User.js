@@ -170,7 +170,13 @@ async function getHashedPassword(id) {
 
   try {
     const resultQuery = await client.query(query, values);
-    return resultQuery.rows[0].pass;//restituisco la password
+    
+    //valore di ritorno
+    if(resultQuery.rows[0] == undefined)return resultQuery.rows[0];
+    else{
+      return resultQuery.rows[0].pass;//restituisco la password
+    }
+
   } catch (error) {
     console.error('Errore durante l\'esecuzione della query:', error);
     throw error; // Rilancia l'errore per una gestione ulteriore

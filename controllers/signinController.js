@@ -45,7 +45,6 @@ router.post("/api/sign-in", bruteforceLimiter , errorBruteforceLimiter, async (r
             try{
                 const info =  await userModel.isPrimeUser(email,"Credenziali")
                 const prime = info.prime
-                console.log(prime)
                 res.cookie("prime", prime)
                 
             }catch(err){

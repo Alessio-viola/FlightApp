@@ -28,11 +28,8 @@ router.post("/api/sign-up" ,async (req, res) => {
 
     const {nome, cognome, username, email, password, conferma_password} = req.body
 
-    console.log(req.body)
-
     //controllo correttezza password
     if (password != conferma_password) {
-        console.log("pass != confpass")
         return res.send({code: 1003})
     }
 
@@ -40,7 +37,6 @@ router.post("/api/sign-up" ,async (req, res) => {
     const regex = /^[A-z0-9\.\+_-]+@[A-z0-9\._-]+\.[A-z]{2,6}$/;
     
     if (!regex.test(email)) {
-        console.log("email scorretta")
         return res.send({code: 1000})
     }
 
@@ -49,7 +45,6 @@ router.post("/api/sign-up" ,async (req, res) => {
     if(result?.code === 1001 || result?.code === 1002){
         return res.send(result)
     }
-    console.log("Sto per inviare la mail ")
     userModel.sendEmail(email) //da controllare la forma
     
     return res.send(result)
