@@ -34,9 +34,11 @@
 
 ## TIPOLOGIE DI UTENTI
 -utenti non autenticati 
+<br/><br/>
 -utenti autenticati
+<br/><br/>
 -utenti autenticati prime 
-
+<br/><br/>
 ## Schermate
 #### Login e registratazione
 - Login: campi email, password per login con campo "Hai dimenticato la password"<br/>
@@ -106,23 +108,14 @@ https://designmodo.github.io/Flat-UI/
 https://fonts.google.com/specimen/Lato
 
 
--aggiungere roba del bagaglio a mano/stiva nella schermata della prenotazione del volo
--aggiungere la casella quando clicchi sul bottone dell'aereo, aggiunegere visule posto con hover o con onclick(vedi esempio edreams)
--rimuovere tutti gli aeroporti con \N
--aggiungere funzionalità modifica
--impostare numero minimo 1 di adulti
--vedere quanto è complicato aggiungere funzionalità hotel e alloggi
-
--aggiungere nelle user stories biglietti acquistati, tracker e cancellazione dati, logout, cambia passw, chat
-
-### AviationStack API e Amadeus API
+## AviationStack API e Amadeus API
 Nel contesto delle richieste alle API esterne, il server agisce come un proxy che inoltra le richieste del client all'API esterna, gestendo l'autenticazione, la protezione delle chiavi API, la manipolazione dei dati e altre operazioni necessarie. Il server funge da intermediario per controllare e gestire il flusso delle richieste e delle risposte tra il client e l'API esterna.
 
 L'utilizzo di un API proxy o gateway consente di aggiungere uno strato di sicurezza e personalizzazione tra il client e le API esterne, fornendo un controllo più granulare sulle richieste, la gestione delle autorizzazioni e la manipolazione dei dati.
 
 L'obbiettivo è eliminare le richieste cross-origin dal punto di vista del browser. (in modo tale che non vengano applicate le restrizioni CORS imposte dal browser)
 
-### Tests
+## Tests
 Per lanciare i tests:
 -se si utilizza una versione specifica di nodejs con nvm , i test si lanciano con il seguente comando: 
   nvm exec <versione_node> mocha tests/signup.test.js  
