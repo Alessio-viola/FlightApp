@@ -1,4 +1,3 @@
-const connectionString = 'postgresql://postgres:alessio2001@localhost:5432/Persone';
-//const connectionString = 'postgresql://postgres:biar@localhost:5432/FlightApp';
+const connectionString = 'INSERIRE STRINGA DI CONNESSIONE AL DB POSTGRESQL';
 
 module.exports.connectionString = connectionString;
