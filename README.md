@@ -1,6 +1,7 @@
 ## Struttura progetto
 <pre>
  - models 
+ 
  - views (interfaccia lato client)
       -nome_pagina.ejs(in caso di utilizzo di template)
       Altrimenti:
@@ -8,33 +9,46 @@
         - nome_pagina.html
         - nome_pagina.js
         - nome_pagina.css
+ 
  - controllers
+      nomepaginaController per ogni pagina che interagisce con il server 
+
  - utils (files .js che svolgono funzionalità richieste da intera app)
+ 
  - bootstrap
+ 
  - assets (risorse ausiliarie)
     - images
     - fonts
- - index.js
+ 
+ - index.js (file principale)
  - global.css
- - configuration.js
- - test (in questa cartella saranno presenti i vari test delle user stories)
+ - configuration.js (file di configurazione con il DB postgreSQL)
+ - tests (in questa cartella saranno presenti i vari test delle user stories)
+   - nomeUserStoryDaTestare
+     unit.test.js
+     integration.test.js
+     acceptance.test.js
+     
 </pre>
+
+## TIPOLOGIE DI UTENTI
+-utenti non autenticati 
+-utenti autenticati
+-utenti autenticati prime 
 
 ## Schermate
 #### Login e registratazione
-- Login: campi email, password per login<br/>
+- Login: campi email, password per login con campo "Hai dimenticato la password"<br/>
 - Registrazione: campi nome, cognome, username, email, password, conferma password per registrazione<br/>
-
-Opzionali: aggiungere "Ricordami" e "Hai dimenticato la password"
 <br/><br/>
 
 #### Schermata principale
-- Utente non registrato
-- Utente registrato
+- Form con inserimento dati relativi al volo da cercare
 
 #### Schermata profilo
 Funzionalità:
-- Modifica valori di registrazione?
+- Modifica valori di registrazione
 - Visualizzare Voli prenotati e biglietti (con distinzione tra futuri e passati)
   <br/><br/>
 
@@ -52,12 +66,7 @@ Si arriva da schermata per selezionare voli. Riepilogo di tutte le informazioni 
 Dopo la conferma un popup avvisa dell'avvenuta prenotazione ed è possibile visualizzare il volo dal profilo. Possibilità di tornare alla selezione di voli, schermata iniziale oppure al profilo.
 <br/><br/>
 
-#### Schermate comuni
-- Loading
-- Errore generico da compilare con informazioni specifiche in base al caso
-  <br/><br/>
-
-#### Live tracker Voli ?
+#### Live tracker Voli 
 Schermata che permette di inserire ID di un volo e trovarlo sulla mappa. Inoltre viene mostrato quanto è stato volato e quanto manca con un arco che collega due pallini (partenza e destinazione) e, in base alla proporzione della distanza percorsa sul totale, l'aereo si trova in un determinato punto dell'arco.
 <br/><br/>
 
