@@ -17,6 +17,7 @@ $(document).ready(() => {
         methods: {},
         mounted() {
             vueContext = this;
+            hideErrorMessage();
         }
     }).mount('#globalContainer');
 })
