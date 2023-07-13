@@ -32,7 +32,21 @@ async function insertTicket(email, flight) {
   }
 }
 
+async function deleteTickets(email) {
+  const query = 'DELETE FROM biglietti WHERE email = $1';
+  const values = [email];
+
+  try {
+    await client.query(query, values);
+    return { code: "success" };
+  } catch (error) {
+    console.error('Errore durante l\'eliminazione dei biglietti:', error);
+    throw error; // Rilancia l'errore per una gestione ulteriore
+  }
+}
+
 module.exports = {
   getTickets,
-  insertTicket
+  insertTicket,
+  deleteTickets
 };

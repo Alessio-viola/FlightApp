@@ -74,6 +74,7 @@ router.get("/eliminazione-account-Google", requireAuth, async (req, res) => {
     if (req.user) {
 
         await userModel.deleteGoogleUser(req.user.email);
+        await ticketModel.deleteTickets(req.user.email)
 
         //distruggi la sessione con il server
         req.session.destroy(err => {
@@ -92,6 +93,7 @@ router.get("/eliminazione-account", requireAuth, async (req, res) => {
     const email = req.session.user
 
     await userModel.deleteUser(email);
+    await ticketModel.deleteTickets(email)
 
     //distruggi la sessione con il server
     req.session.destroy(err => {
