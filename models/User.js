@@ -93,10 +93,10 @@ async function insertUser(id, nome, cognome, username, password) {
 
 async function sendEmail(email){
   const message = {
-    from: 'info.flightapp@gmail.com',
+    from: process.env.INDIRIZZO_EMAIL,
     to: email,
-    subject: 'PROVA EMAIL',
-    html: 'Ti sei registrato!',
+    subject: 'AVVENUTA REGISTRAZIONE',
+    html: 'Registrazione avvenuta con successo!',
   }
   return transport.sendMail(message);
 }
@@ -112,9 +112,9 @@ function generateRandomToken(){
 async function sendTokenEmail(email,token){
 
   const message = {
-    from: 'info.flightapp@gmail.com',
+    from: process.env.INDIRIZZO_EMAIL,
     to: email,
-    subject: 'PROVA EMAIL',
+    subject: 'RECUPERO PASSWORD',
     html: 'Il token di recupero è ' + token + ' !',
   }
   transport.sendMail(message);

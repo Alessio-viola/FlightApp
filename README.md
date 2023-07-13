@@ -12,18 +12,18 @@
  
  - controllers
       nomepaginaController per ogni pagina che interagisce con il server 
-
- - utils (files .js che svolgono funzionalità richieste da intera app)
  
  - bootstrap
  
  - assets (risorse ausiliarie)
     - images
     - fonts
+    - datasets
  
- - index.js (file principale)
+ - index.js (file server principale)
  - global.css
  - configuration.js (file di configurazione con il DB postgreSQL)
+ - .env (file in cui inserire API KEYS)
  - tests (in questa cartella saranno presenti i vari test delle user stories)
    - nomeUserStoryDaTestare
      unit.test.js
