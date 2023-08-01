@@ -91,7 +91,10 @@ describe("User login: UNIT TEST", function(){
         assert.strictEqual(result, undefined)
     })
 
-    after(function() {
+    after(async function() {
+        // Svuota la tabella degli utenti alla fine dei tests
+        await client.query('DELETE FROM credenziali');
+
         // Chiudi la connessione al database dopo i test
         client.end();
         process.exit();

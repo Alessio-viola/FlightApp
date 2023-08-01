@@ -161,7 +161,7 @@ function hideErrorMessage(){
     })
 
 }
-
+/*
 async function getCityFromICAO(icao) {
     if (icaoJson === null) {
         try {
@@ -178,7 +178,7 @@ async function getCityFromICAO(icao) {
             return el.city;
         }
     }
-}
+}*/
 
 function calcDegrees(percentage) {
     return Math.floor(-180 + 180 * percentage);

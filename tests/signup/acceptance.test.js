@@ -41,7 +41,10 @@ describe('User Registration: ACCEPTANCE TESTS', function() {
     await page.waitForTimeout(1000);
   })
 
-  after(function() {
+  after(async function() {
+    // Svuota la tabella degli utenti alla fine dei tests
+    await client.query('DELETE FROM credenziali');
+
     client.end();
     process.exit();
   });

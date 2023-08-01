@@ -1,45 +1,70 @@
 {
-  "type": "FeatureCollection",
-  "features": [
+  "pagination": {
+    "limit": 100,
+    "offset": 0,
+    "count": 1,
+    "total": 1
+  },
+  "data": [
     {
-      "id": "cf2f4eac-a206-4be7-8ac5-618036307fb3",
-      "type": "Feature",
-      "geometry": null,
-      "properties": {
-        "airline": "BCS",
-        "arrival": {
-          "aerodrome": {
-            "initial": "LIMC",
-            "scheduled": "LIMC"
-          },
-          "runwayTime": {
-            "estimated": "2023-05-11T22:07:00Z"
-          }
-        },
-        "callsign": "BCS373",
-        "departure": {
-          "aerodrome": {
-            "actual": "KCVG",
-            "scheduled": "KCVG"
-          },
-          "runwayTime": {
-            "actual": "2023-05-11T14:04:00Z",
-            "initial": "2023-05-11T13:40:00Z"
-          }
-        },
-        "flightStatus": "AIRBORNE",
-        "iataFlightNumber": "QY373",
-        "timestampProcessed": "2023-05-11T15:45:06Z",
-        "aircraftDescription": {
-          "aircraftCode": "A333",
-          "aircraftRegistration": "DACVG"
-        }
+      "flight_date": "2023-07-17",
+      "flight_status": "active",
+      "departure": {
+        "airport": "Philadelphia International",
+        "timezone": "America/New_York",
+        "iata": "PHL",
+        "icao": "KPHL",
+        "terminal": "A",
+        "gate": "20",
+        "delay": 23,
+        "scheduled": "2023-07-17T19:21:00+00:00",
+        "estimated": "2023-07-17T19:21:00+00:00",
+        "actual": "2023-07-17T19:44:00+00:00",
+        "estimated_runway": "2023-07-17T19:44:00+00:00",
+        "actual_runway": "2023-07-17T19:44:00+00:00"
+      },
+      "arrival": {
+        "airport": "Marco Polo",
+        "timezone": "Europe/Rome",
+        "iata": "VCE",
+        "icao": "LIPZ",
+        "terminal": "1",
+        "gate": "326",
+        "baggage": "4",
+        "delay": null,
+        "scheduled": "2023-07-18T09:25:00+00:00",
+        "estimated": "2023-07-18T09:25:00+00:00",
+        "actual": null,
+        "estimated_runway": null,
+        "actual_runway": null
+      },
+      "airline": {
+        "name": "American Airlines",
+        "iata": "AA",
+        "icao": "AAL"
+      },
+      "flight": {
+        "number": "714",
+        "iata": "AA714",
+        "icao": "AAL714",
+        "codeshared": null
+      },
+      "aircraft": {
+        "registration": "N808AN",
+        "iata": "B788",
+        "icao": "B788",
+        "icao24": "AAFFA2"
+      },
+      "live": {
+        "updated": "2023-07-18T02:36:31+00:00",
+        "latitude": 50.24,
+        "longitude": -44.43,
+        "altitude": 11574.8,
+        "direction": 73,
+        "speed_horizontal": 946.372,
+        "speed_vertical": 0,
+        "is_ground": false
       }
     }
-  ],
-  "results": {
-    "publishTime": "2023-05-11T15:45:26.725660353Z",
-    "status": "ok",
-    "total": 1
-  }
+  ]
 }

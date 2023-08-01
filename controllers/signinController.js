@@ -67,8 +67,9 @@ router.post("/check-token", async (req,res) =>{
     const {email,token} = req.body
 
     try{
+        console.log("PRIMA")
         const informations = await userModel.getToken(email)
-
+        console.log("DOPO")
         if(informations == undefined) return res.send({code: 'Error'})
 
         if(informations.code != token){

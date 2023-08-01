@@ -164,7 +164,10 @@ describe('User Registration: UNIT TESTS', function() {
       assert.strictEqual(result.code, 1002); // Codice di errore vincolo di chiave per username 
     });
 
-    after(function() {
+    after(async function() {
+      // Svuota la tabella degli utenti alla fine dei tests
+      await client.query('DELETE FROM credenziali');
+
       // Chiudi la connessione al database dopo i test
       client.end();
       process.exit();
